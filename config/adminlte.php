@@ -533,10 +533,10 @@ return [
         ],
 
         [
-            'text' => 'Daily Report',
+            'text' => 'Laporan Harian',
             'url'  => 'facilitator/daily-reports',
             'icon' => 'fas fa-book',
-            'can' => 'FAS',
+            'can'  => 'FAS',
         ],
 
         [

@@ -8,11 +8,6 @@
         Master Role
     </h1>
 
-    <a href="{{ route('admin.roles.create') }}"
-        class="btn btn-primary">
-        <i class="fas fa-plus"></i>
-        Tambah Role
-    </a>
 </div>
 @stop
 
