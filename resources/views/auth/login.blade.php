@@ -1,4 +1,6 @@
 <x-guest-layout>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -24,15 +26,59 @@
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                type="password"
-                name="password"
-                required autocomplete="current-password" />
+            <x-input-label
+                for="password"
+                :value="__('Password')" />
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <div style="position: relative; margin-top: 4px;">
+
+                <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    style="
+                width: 100%;
+                height: 42px;
+                padding: 8px 45px 8px 12px;
+                border: 1px solid #d1d5db;
+                border-radius: 6px;
+                box-sizing: border-box;
+            ">
+
+                <button
+                    type="button"
+                    id="togglePassword"
+                    aria-label="Tampilkan password"
+                    style="
+                position: absolute;
+                right: 8px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                border: none;
+                background: transparent;
+                color: #6b7280;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            ">
+                    <i class="fas fa-eye"></i>
+                </button>
+
+            </div>
+
+            <x-input-error
+                :messages="$errors->get('password')"
+                class="mt-2" />
+
         </div>
+
 
         <!-- Forgot Password -->
         <!--<div class="block mt-4">
@@ -54,4 +100,34 @@
             </x-primary-button>
         </div>
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const password = document.getElementById('password');
+            const toggle = document.getElementById('togglePassword');
+            const icon = toggle.querySelector('i');
+
+            toggle.addEventListener('click', function() {
+
+                if (password.type === 'password') {
+
+                    password.type = 'text';
+
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+
+                } else {
+
+                    password.type = 'password';
+
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+
+                }
+
+            });
+
+        });
+    </script>
 </x-guest-layout>

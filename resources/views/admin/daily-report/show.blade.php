@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'Create Daily Report')
+@section('title', 'Show Daily Report')
 @section('css')
 <style>
     .content-wrapper {
@@ -33,24 +33,46 @@
 
         <div class="card-body">
 
-            <div class="row mb-4">
-                <div class="col-md-3 font-weight-bold">Tanggal</div>
-                <div class="col-md-9">{{ $dailyReport->report_date->format('d F Y') }}</div>
-            </div>
+            <div class="row">
 
-            <div class="row mb-4">
-                <div class="col-md-3 font-weight-bold">Nama Anak</div>
-                <div class="col-md-9">{{ $dailyReport->student->name }}</div>
-            </div>
+                {{-- Baris 1 --}}
+                <div class="col-md-6 mb-4">
+                    <div class="row">
+                        <div class="col-sm-4 font-weight-bold">Tanggal</div>
+                        <div class="col-sm-8">
+                            {{ $dailyReport->report_date->format('d F Y') }}
+                        </div>
+                    </div>
+                </div>
 
-            <div class="row mb-4">
-                <div class="col-md-3 font-weight-bold">Kelas</div>
-                <div class="col-md-9">{{ $dailyReport->student->schoolClass->name }}</div>
-            </div>
+                <div class="col-md-6 mb-4">
+                    <div class="row">
+                        <div class="col-sm-4 font-weight-bold">Nama Anak</div>
+                        <div class="col-sm-8">
+                            {{ $dailyReport->student->name }}
+                        </div>
+                    </div>
+                </div>
 
-            <div class="row mb-4">
-                <div class="col-md-3 font-weight-bold">Fasilitator</div>
-                <div class="col-md-9">{{ $dailyReport->facilitator->name }}</div>
+                {{-- Baris 2 --}}
+                <div class="col-md-6 mb-4">
+                    <div class="row">
+                        <div class="col-sm-4 font-weight-bold">Kelas</div>
+                        <div class="col-sm-8">
+                            {{ $dailyReport->student->schoolClass->name }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="row">
+                        <div class="col-sm-4 font-weight-bold">Fasilitator</div>
+                        <div class="col-sm-8">
+                            {{ $dailyReport->facilitator->name }}
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>

@@ -15,13 +15,11 @@ Route::middleware('guest')->group(function () {
         ->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
-
     /*
         |--------------------------------------------------------------------------
         | Forgot Password
         |--------------------------------------------------------------------------
         */
-
     Route::get('/forgot-password', [ForgotPasswordController::class, 'create'])
         ->name('password.request');
 

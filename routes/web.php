@@ -89,6 +89,9 @@ Route::middleware(['auth', 'role:FAS'])
             ->name('dashboard');
 
         Route::resource('daily-reports', FacilitatorDailyReportController::class);
+
+        Route::get('/profile', [FacilitatorDashboardController::class, 'profile'])
+            ->name('profile');
     });
 
 /*

@@ -17,7 +17,7 @@ class GenerateId
     public static function make(
         string $modelClass,
         string $prefix,
-        int $digit = 6
+        int $digit = 7
     ): string {
 
         $model = new $modelClass;

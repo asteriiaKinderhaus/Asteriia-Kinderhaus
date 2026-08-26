@@ -200,15 +200,106 @@ class DailyReportController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $facilitator = Facilitator::where(
+            'user_id',
+            Auth::id(),
+        )->firstOrFail();
+
+        $dailyReport = DailyReport::with([
+            'student',
+            'student.schoolClass',
+            'meals',
+            'selfHelps',
+            'stimulations',
+        ])
+            ->where('facilitator_id', $facilitator->id)
+            ->findOrFail($id);
+
+        /* dd(
+            $dailyReport->id,
+            $dailyReport->status
+        );*/
+
+        return view('facilitator.daily-report.edit', compact(
+            'dailyReport'
+        ));
+
+        // Laporan yang sudah final tidak boleh diedit
+        /* if ($dailyReport->status !== 'draft') {
+            return redirect()
+                ->route('facilitator.daily-reports.index')
+                ->with('error', 'Laporan yang sudah final tidak dapat diedit.');
+        }
+
+        $students = Student::where('status', 1)
+            ->orderBy('name')
+            ->get();
+
+        $meals = Meal::orderBy('name')->get();
+
+        $selfHelps = SelfHelp::orderBy('name')->get();
+
+        $stimulationCategories = StimulationCategory::with('items')
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'facilitator.daily-reports.edit',
+            compact(
+                'dailyReport',
+                'students',
+                'meals',
+                'selfHelps',
+                'stimulationCategories'
+            )
+        );*/
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(
+        FacilitatorDailyReportRequest $request,
+        string $id
+    ) {
+        $facilitator = Facilitator::where(
+            'user_id',
+            Auth::id()
+        )->firstOrFail();
+
+        $dailyReport = DailyReport::where(
+            'facilitator_id',
+            $facilitator->id
+        )->findOrFail($id);
+
+        if ($dailyReport->status !== 'draft') {
+            return redirect()
+                ->route('facilitator.daily-reports.index')
+                ->with('error', 'Laporan yang sudah final tidak dapat diedit.');
+        }
+
+        DB::transaction(function () use (
+            $request,
+            $dailyReport
+        ) {
+
+            $dailyReport->update([
+                'report_date' => $request->report_date,
+                'student_id'  => $request->student_id,
+            ]);
+
+            /*
+         * Detail laporan akan kita update
+         * pada tahap berikutnya.
+         */
+        });
+
+        return redirect()
+            ->route('facilitator.daily-reports.index')
+            ->with(
+                'success',
+                'Laporan harian berhasil diperbarui.'
+            );
     }
 
     /**

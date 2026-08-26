@@ -12,7 +12,7 @@ class Generate_ID
     public static function generateId(
         string $modelClass,
         string $prefix,
-        int $digit = 6
+        int $digit = 7
     ): string {
         $model = new $modelClass;
 

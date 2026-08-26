@@ -1,8 +1,8 @@
 @extends('adminlte::page')
-@section('title', 'Daily Report')
+@section('title', 'Laporan Harian')
 
 @section('content_header')
-<h1>Daily Report</h1>
+<h1>Laporan Harian</h1>
 @stop
 
 @section('content')
@@ -10,10 +10,10 @@
     <div class="card-header">
         <a href="{{ route('facilitator.daily-reports.create') }}"
             class="btn btn-primary float-right">
-            <i class="fas fa-plus"></i> New Report
+            <i class="fas fa-plus"></i> Buat Laporan harian
         </a>
         <h3 class="card-title">
-            Daily Report List
+            Daftar Laporan Harian
         </h3>
     </div>
 

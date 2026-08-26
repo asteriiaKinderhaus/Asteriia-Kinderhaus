@@ -62,7 +62,7 @@ class DailyReportController extends Controller
             ->get();
 
         return view(
-            'parent.daily_reports.show',
+            'admin.daily-report.show',
             compact(
                 'dailyReport',
                 'stimulationCategories'

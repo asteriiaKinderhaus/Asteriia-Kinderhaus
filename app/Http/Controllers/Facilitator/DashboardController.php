@@ -21,4 +21,16 @@ class DashboardController extends Controller
             compact('facilitator')
         );
     }
+
+    public function profile()
+    {
+        $user = Auth::user();
+
+        $facilitator = $user->facilitator;
+
+        return view('facilitator.profile', compact(
+            'user',
+            'facilitator'
+        ));
+    }
 }

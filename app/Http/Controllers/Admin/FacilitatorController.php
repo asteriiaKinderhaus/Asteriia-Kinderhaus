@@ -61,6 +61,7 @@ class FacilitatorController extends Controller
     public function store(FacilitatorRequest $request)
     {
 
+    $id = GenerateId::make(Facilitator::class, 'FAS');
         $account = DB::transaction(function () use ($request) {
 
             $account = $this->accountservice->createUser(
@@ -69,7 +70,6 @@ class FacilitatorController extends Controller
             );
 
             $user = $account['user'];
-            // dd($user);
             $facilitator = Facilitator::create([
                 'id'         => GenerateId::make(Facilitator::class, 'FAS'),
                 'name'       => $request->name,

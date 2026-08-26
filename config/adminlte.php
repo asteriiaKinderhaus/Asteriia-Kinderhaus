@@ -546,7 +546,7 @@ return [
 
         [
             'text' => 'Profile',
-            'url'  => 'facilitator/profile',
+            'route'  => 'facilitator.profile',
             'icon' => 'fas fa-user',
             'can' => 'FAS',
         ],
