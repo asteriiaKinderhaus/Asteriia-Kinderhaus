@@ -28,7 +28,6 @@
                         <th>Sisa Sedikit</th>
                         <th>Mandiri</th>
                         <th>Bantuan</th>
-                        <!--<th width="25%">Catatan</th>-->
 
                     </tr>
 

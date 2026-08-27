@@ -18,6 +18,7 @@ use App\Helpers\GenerateSelfHelpReportID;
 use App\Models\DailyReportSelfHelp;
 use App\Models\StimulationCategory;
 use App\Models\DailyReportStimulation;
+use App\Models\Student;
 
 class DailyReportController extends Controller
 {
@@ -186,8 +187,9 @@ class DailyReportController extends Controller
             ->orderBy('name')
             ->get();
 
+        //dd($stimulationCategories);
         return view(
-            'facilitator.daily_reports.show',
+            'facilitator.daily-report.show',
             compact(
                 'dailyReport',
                 'stimulationCategories'
@@ -215,17 +217,8 @@ class DailyReportController extends Controller
             ->where('facilitator_id', $facilitator->id)
             ->findOrFail($id);
 
-        /* dd(
-            $dailyReport->id,
-            $dailyReport->status
-        );*/
-
-        return view('facilitator.daily-report.edit', compact(
-            'dailyReport'
-        ));
-
         // Laporan yang sudah final tidak boleh diedit
-        /* if ($dailyReport->status !== 'draft') {
+        if ($dailyReport->status) {
             return redirect()
                 ->route('facilitator.daily-reports.index')
                 ->with('error', 'Laporan yang sudah final tidak dapat diedit.');
@@ -244,7 +237,7 @@ class DailyReportController extends Controller
             ->get();
 
         return view(
-            'facilitator.daily-reports.edit',
+            'facilitator.daily-report.edit',
             compact(
                 'dailyReport',
                 'students',
@@ -252,55 +245,213 @@ class DailyReportController extends Controller
                 'selfHelps',
                 'stimulationCategories'
             )
-        );*/
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(
-        FacilitatorDailyReportRequest $request,
-        string $id
-    ) {
+
+    public function update(Request $request, string $id)
+    {
         $facilitator = Facilitator::where(
             'user_id',
             Auth::id()
         )->firstOrFail();
 
-        $dailyReport = DailyReport::where(
-            'facilitator_id',
-            $facilitator->id
-        )->findOrFail($id);
+        $dailyReport = DailyReport::with([
+            'meals',
+            'selfHelps',
+            'stimulations',
+        ])
+            ->where('facilitator_id', $facilitator->id)
+            ->findOrFail($id);
 
-        if ($dailyReport->status !== 'draft') {
+        // Laporan yang sudah final tidak boleh diedit
+        if ($dailyReport->status) {
             return redirect()
                 ->route('facilitator.daily-reports.index')
-                ->with('error', 'Laporan yang sudah final tidak dapat diedit.');
+                ->with(
+                    'error',
+                    'Laporan yang sudah final tidak dapat diedit.'
+                );
         }
 
-        DB::transaction(function () use (
-            $request,
-            $dailyReport
-        ) {
+        $request->validate([
+            'additional_note' => 'nullable|string|max:1000',
 
-            $dailyReport->update([
-                'report_date' => $request->report_date,
-                'student_id'  => $request->student_id,
-            ]);
+            'meal' => 'nullable|array',
+
+            'meal.*.food_status' => [
+                'nullable',
+                'in:HABIS,SISA_SEDIKIT,TIDAK_HABIS',
+            ],
+
+            'meal.*.assistance' => [
+                'nullable',
+                'in:MANDIRI,BANTUAN',
+            ],
+
+            'self_help' => 'nullable|array',
+
+            'self_help.*.assistance' => [
+                'nullable',
+                'in:MANDIRI,BANTUAN',
+            ],
+
+            'stimulations' => 'nullable|array',
+
+            'stimulations.*' => [
+                'exists:stimulation_items,id',
+            ],
+        ]);
+
+        DB::transaction(function () use ($request, $dailyReport) {
 
             /*
-         * Detail laporan akan kita update
-         * pada tahap berikutnya.
-         */
+        |--------------------------------------------------------------------------
+        | UPDATE DAILY REPORT
+        |--------------------------------------------------------------------------
+        */
+
+            $dailyReport->update([
+                'additional_note' => $request->additional_note,
+            ]);
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | UPDATE MEALS
+        |--------------------------------------------------------------------------
+        */
+
+            foreach ($request->meals ?? [] as $mealId => $meal) {
+
+                $reportMeal = DailyReportMeal::where(
+                    'daily_report_id',
+                    $dailyReport->id
+                )
+                    ->where(
+                        'meal_id',
+                        $mealId
+                    )
+                    ->first();
+
+                if (!$reportMeal) {
+                    continue;
+                }
+
+                $reportMeal->update([
+                    'food_status' => $meal['food_status'] ?? null,
+                    'assistance'  => $meal['assistance'] ?? null,
+                ]);
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | UPDATE SELF HELP
+        |--------------------------------------------------------------------------
+        */
+
+            foreach ($request->self_help ?? [] as $selfHelpId => $selfHelp) {
+
+                $reportSelfHelp = DailyReportSelfHelp::where(
+                    'daily_report_id',
+                    $dailyReport->id
+                )
+                    ->where(
+                        'self_help_id',
+                        $selfHelpId
+                    )
+                    ->first();
+
+                if (!$reportSelfHelp) {
+                    continue;
+                }
+
+                $reportSelfHelp->update([
+                    'assistance' => $selfHelp['assistance'] ?? null,
+                ]);
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | UPDATE STIMULATIONS
+        |--------------------------------------------------------------------------
+        */
+
+            $selectedStimulations = $request->stimulations ?? [];
+
+            /*
+        |--------------------------------------------------------------------------
+        | Ambil data stimulasi yang sudah ada dari DATABASE
+        |--------------------------------------------------------------------------
+        */
+
+            $existingStimulations = DailyReportStimulation::where(
+                'daily_report_id',
+                $dailyReport->id
+            )->get();
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Hapus stimulasi yang sudah tidak dipilih
+        |--------------------------------------------------------------------------
+        */
+
+            foreach ($existingStimulations as $existing) {
+
+                if (!in_array(
+                    $existing->stimulation_item_id,
+                    $selectedStimulations
+                )) {
+                    $existing->delete();
+                }
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Tambahkan stimulasi yang benar-benar baru
+        |--------------------------------------------------------------------------
+        */
+
+            foreach ($selectedStimulations as $itemId) {
+
+                $exists = DailyReportStimulation::where(
+                    'daily_report_id',
+                    $dailyReport->id
+                )
+                    ->where(
+                        'stimulation_item_id',
+                        $itemId
+                    )
+                    ->exists();
+
+                if (!$exists) {
+
+                    DailyReportStimulation::create([
+                        'id' => Generate_ID::generateReportStimulationID(),
+
+                        'daily_report_id' => $dailyReport->id,
+
+                        'stimulation_item_id' => $itemId,
+                    ]);
+                }
+            }
         });
 
         return redirect()
             ->route('facilitator.daily-reports.index')
             ->with(
                 'success',
-                'Laporan harian berhasil diperbarui.'
+                'Laporan berhasil diperbarui.'
             );
     }
+
 
     /**
      * Remove the specified resource from storage.
