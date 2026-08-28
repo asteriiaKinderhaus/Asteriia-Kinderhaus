@@ -15,7 +15,17 @@
             Form Edit Fasilitator
         </h3>
     </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>Terjadi kesalahan:</strong>
 
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <form action="{{ route('admin.facilitators.update', $facilitator->id) }}" method="POST">
         @csrf
@@ -64,7 +74,7 @@
                         type="text"
                         name="telephone"
                         class="form-control"
-                        value="{{ old('no_hp', $facilitator->telephone) }}">
+                        value="{{ old('telephone', $facilitator->telephone) }}">
                 </div>
             </div>
 
@@ -111,6 +121,10 @@
 
 
         <div class="card-footer">
+            <a href="{{ route('admin.facilitators.index') }}"
+                class="btn btn-secondary">
+                Kembali
+            </a>
 
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-save"></i>
@@ -118,12 +132,6 @@
             </button>
 
 
-            <a href="{{ route('admin.facilitators.index') }}"
-                class="btn btn-secondary">
-
-                Kembali
-
-            </a>
 
         </div>
 
