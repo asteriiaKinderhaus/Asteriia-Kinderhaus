@@ -1,15 +1,15 @@
 @extends('adminlte::page')
 
-@section('title', 'Siswa')
+@section('title', 'Peserta Didik')
 
 @section('content_header')
 <div class="d-flex justify-content-between">
-    <h1>Siswa</h1>
+    <h1>Peserta Didik</h1>
 
     <a href="{{ route('admin.students.create') }}"
         class="btn btn-primary">
         <i class="fas fa-plus"></i>
-        Tambah siswa
+        Tambah peserta didik
     </a>
 </div>
 @stop
@@ -33,19 +33,15 @@
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">
-            Student List
+            Daftar Peserta Didik
         </h3>
     </div>
 
     <div class="card-body">
-
         <table id="studentTable"
             class="table table-bordered table-striped">
-
             <thead>
-
                 <tr>
-
                     <th width="40">No</th>
                     <th>Nama siswa</th>
                     <th>Tanggal Lahir</th>
@@ -54,17 +50,11 @@
                     <th>Kelas</th>
                     <th>Status</th>
                     <th width="130">Aksi</th>
-
                 </tr>
-
             </thead>
-
             <tbody>
-
                 @foreach($students as $student)
-
                 <tr>
-
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->birth_date->format('d-m-Y') }}</td>
@@ -76,104 +66,64 @@
                         <span class="badge badge-success">
                             Active
                         </span>
-
                         @else
-
                         <span class="badge badge-danger">
                             Inactive
                         </span>
-
                         @endif
-
                     </td>
-
                     <td>
                         <a href="{{ route('admin.students.show',$student->id) }}"
                             class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
                         </a>
-
                         <a href="{{ route('admin.students.edit',$student->id) }}"
                             class="btn btn-warning btn-sm">
-
                             <i class="fas fa-edit"></i>
-
                         </a>
-
-                        <form action="{{ route('admin.students.destroy',$student->id) }}"
+                        <form action="{{ route('admin.students.toggle-status', $student->id) }}"
                             method="POST"
                             class="d-inline">
-
                             @csrf
-                            @method('DELETE')
-
+                            @method('PATCH')
                             <button
                                 class="btn btn-danger btn-sm"
-                                onclick="return confirm('Delete this student?')">
-
-                                <i class="fas fa-trash"></i>
-
+                                onclick="return confirm('Apakah Anda yakin ingin mengubah status siswa ini?') ">
+                                <i class="fas fa-user-slash"></i>
                             </button>
-
                         </form>
-
                     </td>
-
                 </tr>
-
                 @endforeach
-
             </tbody>
-
         </table>
-
     </div>
-
 </div>
 
 @stop
-
 @section('js')
 
 <script>
     $(function() {
 
         $('#studentTable').DataTable({
-
             responsive: true,
-
             autoWidth: false,
-
             pageLength: 10,
-
             language: {
-
                 search: "Search:",
-
                 lengthMenu: "Show _MENU_ data",
-
                 zeroRecords: "No data found",
-
                 info: "Showing _START_ to _END_ of _TOTAL_ data",
-
                 infoEmpty: "No data",
-
                 paginate: {
-
                     first: "First",
-
                     last: "Last",
-
                     next: "Next",
-
                     previous: "Previous"
-
                 }
-
             }
-
         });
-
     });
 </script>
 

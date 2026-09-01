@@ -101,23 +101,7 @@
 
                         </a>
 
-                        <form action="{{ route('admin.facilitators.destroy',$facilitator->id) }}"
-                            method="POST"
-                            style="display:inline;">
-
-                            @csrf
-                            @method('DELETE')
-
-                            <button
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Delete this facilitator?')">
-
-                                <i class="fas fa-trash"></i>
-
-                            </button>
-
-                        </form>
-
+                        
                     </td>
 
                 </tr>

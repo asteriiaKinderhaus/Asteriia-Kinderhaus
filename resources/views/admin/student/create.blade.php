@@ -86,8 +86,8 @@
                         <div class="card-body">
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Nama Siswa</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-2 col-form-label">Nama Siswa</label>
+                                <div class="col-sm-4">
                                     <input
                                         type="text"
                                         name="name"
@@ -97,8 +97,8 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Nama panggilan</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-2 col-form-label">Nama panggilan</label>
+                                <div class="col-sm-4">
                                     <input
                                         type="text"
                                         name="nickname"
@@ -108,8 +108,8 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Tanggal lahir</label>
-                                <div class="col-sm-8"> <input
+                                <label class="col-sm-2 col-form-label">Tanggal lahir</label>
+                                <div class="col-sm-4"> <input
                                         type="date"
                                         name="birth_date"
                                         value="{{ old('birth_date') }}"
@@ -119,8 +119,8 @@
 
                             <div class="form-group row">
 
-                                <label class="col-sm-3 col-form-label">Jenis Kelamin</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                                <div class="col-sm-4">
                                     <select name="gender_id"
                                         class="form-control">
 
@@ -141,7 +141,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <!--<div class="form-group row">
 
                                 <label class="col-sm-3 col-form-label">Kelas</label>
                                 <div class="col-sm-8">
@@ -174,12 +174,12 @@
                                     @enderror
 
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="form-group row">
 
-                                <label class="col-sm-3 col-form-label">Orang Tua</label>
-                                <div class="col-sm-8">
+                                <label class="col-sm-2 col-form-label">Orang Tua</label>
+                                <div class="col-sm-4">
                                     <select
                                         name="parent_id"
                                         class="form-control @error('parent_id') is-invalid @enderror">
@@ -203,7 +203,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <!--<div class="form-group row">
 
                                 <label class="col-sm-3 col-form-label">Status</label>
                                 <div class="col-sm-8">
@@ -217,7 +217,7 @@
 
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
 

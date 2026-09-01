@@ -15,13 +15,13 @@ class DashboardController extends Controller
         $studentCount      = Student::count();
         $facilitatorCount  = Facilitator::count();
         $parentCount       = ParentModel::count();   // sesuaikan nama model
-        $classCount        = SchoolClass::count();
+        //$classCount        = SchoolClass::count();
 
         return view('admin.dashboard', compact(
             'studentCount',
             'facilitatorCount',
-            'parentCount',
-            'classCount'
+            'parentCount'
+            //'classCount'
         ));
     }
 }

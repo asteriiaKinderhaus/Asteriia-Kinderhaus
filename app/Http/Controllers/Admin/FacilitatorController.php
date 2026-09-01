@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\FacilitatorRequest;
 use App\Services\AccountService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountCreatedMail;
+use App\Models\Student;
 
 class FacilitatorController extends Controller
 {
@@ -41,17 +42,20 @@ class FacilitatorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-
-
     public function create()
     {
         $genders = Gender::orderBy('gender')->get();
+        $students = Student::where('status', 1)
+            ->whereDoesntHave('facilitatorStudent')
+            ->orderBy('name')
+            ->get();
+        /*$students = Student::where('status', 1)
+            ->orderBy('name')
+            ->get();*/
 
         return view(
-            'admin.facilitator.create',
-            compact(
-                'genders'
-            )
+            'admin.facilitators.create',
+            compact('genders', 'students')
         );
     }
 

@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\DailyReportController as AdminDailyReportControll
 use App\Http\Controllers\Admin\SelfHelpController;
 use App\Http\Controllers\Admin\BrainGymController;
 use App\Http\Controllers\Admin\StimulationController;
+use App\Http\Controllers\Admin\FacilitatorStudentController;
+
 // Facilitator Controller
 use App\Http\Controllers\Facilitator\DailyReportController as FacilitatorDailyReportController;
 
@@ -72,6 +74,9 @@ Route::middleware(['auth', 'role:ADM'])
         Route::resource('selfhelp', SelfHelpController::class);
         Route::resource('brain-gym', BrainGymController::class);
         Route::resource('stimulation', StimulationController::class);
+        Route::resource('facilitator-students', FacilitatorStudentController::class);
+        Route::patch('/students/{student}/toggle-status', [StudentController::class, 'toggleStatus'])
+            ->name('students.toggle-status');
     });
 
 /*

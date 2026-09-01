@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\SchoolClass;
+use App\Models\Student;
+use App\Models\FacilitatorStudent;
 
 class Facilitator extends Model
 {
     use SoftDeletes;
 
     protected $table = 'facilitators';
-
     protected $primaryKey = 'id';
-
     public $incrementing = false;
-
     protected $keyType = 'string';
-
     protected $fillable = [
         'id',
         'name',
@@ -53,6 +51,24 @@ class Facilitator extends Model
         )->withTimestamps();
     }
 
+    public function facilitatorStudent()
+    {
+        return $this->hasOne(
+            FacilitatorStudent::class,
+            'facilitator_id',
+            'id'
+        );
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(
+            Student::class,
+            'facilitator_student',
+            'facilitator_id',
+            'student_id'
+        )->withTimestamps();
+    }
     public function dailyReports()
     {
         return $this->hasMany(

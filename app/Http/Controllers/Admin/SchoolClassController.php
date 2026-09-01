@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SchoolClass;
 use App\Models\Facilitator;
-//use App\Http\Controllers\Admin\Faci
 
 class SchoolClassController extends Controller
 {

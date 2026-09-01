@@ -73,4 +73,22 @@ class StudentController extends Controller
 
         return view('admin.student.edit', compact('student', 'parent', 'genders'));
     }
+
+    // Function to toggle student status
+    public function toggleStatus(string $id)
+    {
+        $student = Student::findOrFail($id);
+        $student->update([
+            'status' => !$student->status,
+        ]);
+
+        return redirect()
+            ->route('admin.students.index')
+            ->with(
+                'success',
+                $student->status
+                    ? 'Siswa berhasil diaktifkan.'
+                    : 'Siswa berhasil dinonaktifkan.'
+            );
+    }
 }

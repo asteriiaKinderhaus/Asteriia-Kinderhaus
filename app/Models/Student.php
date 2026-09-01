@@ -8,19 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\ParentModel;
 use App\Models\Gender;
 use App\Models\SchoolClass;
+use App\models\Facilitator;
+use App\Models\FacilitatorStudent;
 
 class Student extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $table = 'students';
-
     protected $primaryKey = 'id';
-
     public $incrementing = false;
-
     protected $keyType = 'string';
-
     protected $fillable = [
         'id',
         'nis',
@@ -65,6 +63,25 @@ class Student extends Model
             'class_id',
             'id'
         );
+    }
+
+    public function facilitatorStudent()
+    {
+        return $this->hasOne(
+            FacilitatorStudent::class,
+            'student_id',
+            'id'
+        );
+    }
+
+    public function facilitators()
+    {
+        return $this->belongsToMany(
+            Facilitator::class,
+            'facilitator_student',
+            'student_id',
+            'facilitator_id'
+        )->withTimestamps();
     }
 
     public function dailyReports()
