@@ -15,7 +15,15 @@
             Form Edit Siswa
         </h3>
     </div>
-
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <form action="{{ route('admin.students.update', $student->id) }}" method="POST">
         @csrf
@@ -41,10 +49,20 @@
                         type="text"
                         name="parent"
                         class="form-control"
-                        value="{{ old('name', $student->parent->name) }}">
+                        value="{{ old('name', $student->parent->name) }}" readonly>
                 </div>
             </div>
 
+            <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Tempat Lahir</label>
+                <div class="col-sm-9">
+                    <input
+                        type="text"
+                        name="birth_place"
+                        class="form-control"
+                        value="{{ old('birth_place', $student->birth_place) }}">
+                </div>
+            </div>
 
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Tanggal Lahir</label>

@@ -1,20 +1,17 @@
 @extends('adminlte::page')
-
 @section('title','Tambah Siswa')
 
 @section('content_header')
-<h1>
+<h3>
     <i class="fas fa-chalkboard-teacher"></i>
-    Tambah Siswa
-</h1>
+    Tambah Peserta didik
+</h3>
 @stop
 
 @section('content')
-
 <div class="card">
-
     <div class="card-header bg-primary">
-        <h3 class="card-title">Form Siswa</h3>
+        <h3 class="card-title ">Form Peserta didik</h3>
     </div>
     @if ($errors->any())
     <div class="alert alert-danger">
@@ -25,18 +22,12 @@
         </ul>
     </div>
     @endif
-    <form action="{{ route('admin.students.store') }}"
-        method="POST">
-
+    <form action="{{ route('admin.students.store') }}" method="POST">
         @csrf
-
         <div class="card-body">
-
             <div class="row">
-
                 {{-- LOGIN INFORMATION --}}
                 <!--<div class="col-md-6">
-
                     <div class="card card-outline card-primary">
 
                         <div class="card-header">
@@ -80,11 +71,10 @@
                     <div class="card card-outline card-success">
 
                         <div class="card-header">
-                            <strong>Personal Informasi</strong>
+                            <strong>Data peserta didik</strong>
                         </div>
 
                         <div class="card-body">
-
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Nama Siswa</label>
                                 <div class="col-sm-4">
@@ -103,6 +93,17 @@
                                         type="text"
                                         name="nickname"
                                         value="{{ old('nickname') }}"
+                                        class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Tempat Lahir</label>
+                                <div class="col-sm-4">
+                                    <input
+                                        type="text"
+                                        name="birth_place"
+                                        value="{{ old('birth_place') }}"
                                         class="form-control">
                                 </div>
                             </div>
@@ -140,41 +141,6 @@
 
                                 </div>
                             </div>
-
-                            <!--<div class="form-group row">
-
-                                <label class="col-sm-3 col-form-label">Kelas</label>
-                                <div class="col-sm-8">
-                                    <select
-                                        name="class_id"
-                                        class="form-control @error('class_id') is-invalid @enderror">
-
-                                        <option value="">-- Pilih Kelas --</option>
-
-                                        @foreach($classes as $class)
-
-                                        <option
-                                            value="{{ $class->id }}"
-                                            @selected(old('class_id')==$class->id)>
-
-                                            {{ $class->name }}
-
-                                        </option>
-
-                                        @endforeach
-
-                                    </select>
-
-                                    @error('class_id')
-
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-
-                                    @enderror
-
-                                </div>
-                            </div>-->
 
                             <div class="form-group row">
 

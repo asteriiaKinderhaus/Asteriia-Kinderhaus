@@ -1,7 +1,5 @@
 @extends('adminlte::page')
-
 @section('title', 'Peserta Didik')
-
 @section('content_header')
 <div class="d-flex justify-content-between">
     <h1>Peserta Didik</h1>
@@ -18,7 +16,6 @@
 
 @if(session('success'))
 <div class="alert alert-success alert-dismissible fade show">
-
     <button type="button"
         class="close"
         data-dismiss="alert">
@@ -44,10 +41,9 @@
                 <tr>
                     <th width="40">No</th>
                     <th>Nama siswa</th>
-                    <th>Tanggal Lahir</th>
+                    <th>Tempat & Tanggal Lahir</th>
                     <th>Jenis Kelamin</th>
                     <th>Nama Orang Tua</th>
-                    <th>Kelas</th>
                     <th>Status</th>
                     <th width="130">Aksi</th>
                 </tr>
@@ -57,10 +53,9 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $student->name }}</td>
-                    <td>{{ $student->birth_date->format('d-m-Y') }}</td>
+                    <td>{{ $student->birth_place . ', ' . $student->birth_date->format('d-m-Y') }}</td>
                     <td>{{ $student->gender->gender ?? '-' }}</td>
                     <td>{{ $student->parent->name ?? '-' }}</td>
-                    <td>{{ $student->schoolClass->name ?? '-' }}</td>
                     <td>
                         @if($student->status)
                         <span class="badge badge-success">
