@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Gender;
 use App\Models\ParentModel;
-use App\Models\SchoolClass;
 use App\Http\Requests\Admin\StudentRequest;
 use App\Helpers\GenerateId;
 use Illuminate\Support\Facades\DB;
@@ -18,8 +16,7 @@ class StudentController extends Controller
     {
         $students = Student::with([
             'gender',
-            'parent'/*,
-            'schoolClass'*/
+            'parent'
         ])
             ->orderBy('name')
             ->get();
@@ -68,10 +65,10 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         $student = Student::findOrFail($id);
-        $parent = ParentModel::orderBy('id')->get();
+        $parents = ParentModel::orderBy('id')->get();
         $genders = Gender::orderBy('gender')->get();
 
-        return view('admin.student.edit', compact('student', 'parent', 'genders'));
+        return view('admin.student.edit', compact('student', 'parents', 'genders'));
     }
 
     // Function to toggle student status
@@ -101,12 +98,12 @@ class StudentController extends Controller
             'birth_place' => $request->birth_place,
             'birth_date'  => $request->birth_date,
             'gender_id'   => $request->gender_id,
-            //'parent_id'   => $request->parent_id,
+            'parent_id'   => $request->parent_id,
             //'status'      => $request->status,
         ]);
 
         return redirect()
             ->route('admin.students.index')
-            ->with('success', 'Student successfully updated.');
+            ->with('success', 'Data peserta didik berhasil diperbarui.');
     }
 }

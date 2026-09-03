@@ -51,18 +51,20 @@
                         <td>{{ $item->student->name ?? '-' }}</td>
                         <td class="text-center">
 
-                            <a href="{{ route(
-                                'admin.facilitator-students.edit',
-                                $item->facilitator_id
-                            ) }}"
-                                class="btn btn-warning btn-sm">
+                            <a
+                                href="{{ route('admin.facilitator-students.edit', [
+                                            'facilitator_id'=> $item->facilitator_id,
+                                            'student_id'    => $item->student_id,
+                                        ]) }}"
+                                class="btn btn-warning btn-sm"
+                                title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
 
                             <form action="{{ route('admin.facilitator-students.destroy',
                                             [
                                                 'facilitator_id' => $item->facilitator_id,
-                                                'student_id' => $item->student_id,
+                                                'student_id'     => $item->student_id,
                                             ]) }}"
                                 method="POST"
                                 class="d-inline">

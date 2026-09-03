@@ -74,11 +74,36 @@ Route::middleware(['auth', 'role:ADM'])
         Route::resource('selfhelp', SelfHelpController::class);
         Route::resource('brain-gym', BrainGymController::class);
         Route::resource('stimulation', StimulationController::class);
-        Route::resource('facilitator-students', FacilitatorStudentController::class)->except(['destroy']);
+        Route::get(
+            '/facilitator-students',
+            [FacilitatorStudentController::class, 'index']
+        )->name('facilitator-students.index');
+
+        Route::get(
+            '/facilitator-students/create',
+            [FacilitatorStudentController::class, 'create']
+        )->name('facilitator-students.create');
+
+        Route::post(
+            '/facilitator-students',
+            [FacilitatorStudentController::class, 'store']
+        )->name('facilitator-students.store');
+
+        Route::get(
+            '/facilitator-students/{facilitator_id}/{student_id}/edit',
+            [FacilitatorStudentController::class, 'edit']
+        )->name('facilitator-students.edit');
+
+        Route::put(
+            '/facilitator-students/{facilitator_id}/{student_id}',
+            [FacilitatorStudentController::class, 'update']
+        )->name('facilitator-students.update');
+
         Route::delete(
-            'facilitator-students/{facilitator_id}/{student_id}',
+            '/facilitator-students/{facilitator_id}/{student_id}',
             [FacilitatorStudentController::class, 'destroy']
         )->name('facilitator-students.destroy');
+
         Route::patch('/students/{student}/toggle-status', [StudentController::class, 'toggleStatus'])
             ->name('students.toggle-status');
     });

@@ -31,8 +31,8 @@
 
         <div class="card-body">
             <div class="form-group row">
-                <label class="col-sm-3 col-form-label">Nama Siswa</label>
-                <div class="col-sm-9">
+                <label class="col-sm-3 col-form-label">Nama Peserta Didik</label>
+                <div class="col-sm-3">
                     <input
                         type="text"
                         name="name"
@@ -44,18 +44,31 @@
 
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Nama Orang Tua</label>
-                <div class="col-sm-9">
-                    <input
-                        type="text"
-                        name="parent"
-                        class="form-control"
-                        value="{{ old('name', $student->parent->name) }}" readonly>
+                <div class="col-sm-3 col-form-label">
+
+                    <select name="parent_id"
+                        class="form-control @error('parent_id') is-invalid @enderror">
+
+                        <option value="">-- Pilih Orang Tua --</option>
+
+                        @foreach($parents as $parent)
+                        <option value="{{ $parent->id }}"
+                            {{ old('parent_id', $student->parent_id) == $parent->id ? 'selected' : '' }}>
+                            {{ $parent->name }}
+                        </option>
+                        @endforeach
+
+                    </select>
                 </div>
+
+                @error('parent_id')
+                <span class="invalid-feedback">{{ $message }}</span>
+                @enderror
             </div>
 
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Tempat Lahir</label>
-                <div class="col-sm-9">
+                <div class="col-sm-3">
                     <input
                         type="text"
                         name="birth_place"
@@ -66,7 +79,7 @@
 
             <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Tanggal Lahir</label>
-                <div class="col-sm-9">
+                <div class="col-sm-3">
                     <input
                         type="date"
                         name="birth_date"
