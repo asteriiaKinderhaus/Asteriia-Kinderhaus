@@ -34,28 +34,6 @@
 
             </div>
 
-            {{-- Kelas --}}
-            <div class="col-md-4">
-
-                <div class="form-group">
-
-                    <label>Kelas</label>
-
-                    <input
-                        type="text"
-                        class="form-control"
-                        value="{{ $class?->name }}"
-                        readonly>
-
-                    <input
-                        type="hidden"
-                        name="class_id"
-                        value="{{ $class?->id }}">
-
-                </div>
-
-            </div>
-
             {{-- Fasilitator --}}
             <div class="col-md-4">
 
@@ -101,16 +79,12 @@
                             -- Pilih Anak --
                         </option>
 
-                        @foreach($students as $student)
-
+                        @foreach($students as $relation)
                         <option
-                            value="{{ $student->id }}"
-                            {{ old('student_id') == $student->id ? 'selected' : '' }}>
-
-                            {{ $student->name }}
-
+                            value="{{ $relation->student->id }}"
+                            {{ old('student_id') == $relation->student->id ? 'selected' : '' }}>
+                            {{ $relation->student->name }}
                         </option>
-
                         @endforeach
 
                     </select>

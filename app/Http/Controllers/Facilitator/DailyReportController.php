@@ -44,25 +44,25 @@ class DailyReportController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
-        $facilitator = Facilitator::with([
-            'schoolClasses.students'
-        ])
-            ->where('user_id', Auth::id())
+        $facilitator = Facilitator::where('user_id', Auth::id())
             ->firstOrFail();
 
-        $class = $facilitator->schoolClasses->first();
+        // Peserta didik yang saat ini aktif menjadi tanggung jawab fasilitator
+        $students = $facilitator->facilitatorStudents()
+            ->whereNull('end_date')
+            ->with('student')
+            ->get()
+            ->sortBy(fn($relation) => $relation->student?->name);
 
-        if (!$class) {
+        // Jika tidak ada peserta didik yang terhubung
+        if ($students->isEmpty()) {
             return redirect()
                 ->route('facilitator.daily-reports.index')
-                ->with('error', 'Anda belum memiliki kelas.');
+                ->with('error', 'Anda belum memiliki peserta didik yang ditugaskan.');
         }
-
-        $students = $class->students()
-            ->orderBy('name')
-            ->get();
 
         $meals = Meal::where('status', 1)
             ->orderBy('order_no')
@@ -80,7 +80,6 @@ class DailyReportController extends Controller
             'facilitator.daily-report.create',
             compact(
                 'facilitator',
-                'class',
                 'students',
                 'meals',
                 'selfHelps',
@@ -94,17 +93,53 @@ class DailyReportController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
+            'report_date' => 'required|date',
+            'student_id' => 'required|exists:students,id',
             'additional_note' => 'nullable|string|max:1000',
             'stimulations' => 'nullable|array',
             'stimulations.*' => 'exists:stimulation_items,id',
         ]);
 
+        /*
+    |--------------------------------------------------------------------------
+    | Ambil fasilitator berdasarkan user yang sedang login
+    |--------------------------------------------------------------------------
+    */
+        $facilitator = Facilitator::where('user_id', Auth::id())
+            ->firstOrFail();
+
+        /*
+    |--------------------------------------------------------------------------
+    | Pastikan peserta didik memang ditugaskan kepada fasilitator
+    | pada tanggal laporan
+    |--------------------------------------------------------------------------
+    */
+        $assignmentExists = $facilitator->facilitatorStudents()
+            ->where('student_id', $request->student_id)
+            ->whereDate('start_date', '<=', $request->report_date)
+            ->where(function ($query) use ($request) {
+                $query->whereNull('end_date')
+                    ->orWhereDate('end_date', '>=', $request->report_date);
+            })
+            ->exists();
+
+        if (!$assignmentExists) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'student_id' => 'Peserta didik tersebut tidak ditugaskan kepada Anda pada tanggal laporan.'
+                ]);
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | Cegah laporan ganda untuk anak pada tanggal yang sama
+    |--------------------------------------------------------------------------
+    */
         $exists = DailyReport::where('student_id', $request->student_id)
             ->whereDate('report_date', $request->report_date)
             ->exists();
-
 
         if ($exists) {
             return back()
@@ -113,22 +148,31 @@ class DailyReportController extends Controller
                     'student_id' => 'Laporan harian untuk anak ini pada tanggal tersebut sudah ada.'
                 ]);
         }
-        //dd($request->all());
-        DB::transaction(function () use ($request) {
+
+        /*
+    |--------------------------------------------------------------------------
+    | Simpan laporan
+    |--------------------------------------------------------------------------
+    */
+        DB::transaction(function () use ($request, $facilitator) {
 
             // Simpan Daily Report
             $dailyReport = DailyReport::create([
-                'id'             => GenerateDailyReportId::dailyReportID(),
-                'report_date'    => $request->report_date,
-                'student_id'     => $request->student_id,
-                'facilitator_id' => $request->facilitator_id,
+                'id'              => GenerateDailyReportId::dailyReportID(),
+                'report_date'     => $request->report_date,
+                'student_id'      => $request->student_id,
+                'facilitator_id'  => $facilitator->id,
                 'additional_note' => $request->additional_note,
-                'status'         => 0,
+                'status'          => 0,
             ]);
 
             // Simpan meal
-            foreach ($request->meal as $mealId => $meal) {
-                if (empty($meal['food_status']) && empty($meal['assistance'])) {
+            foreach ($request->meal ?? [] as $mealId => $meal) {
+
+                if (
+                    empty($meal['food_status']) &&
+                    empty($meal['assistance'])
+                ) {
                     continue;
                 }
 
@@ -141,26 +185,30 @@ class DailyReportController extends Controller
                 ]);
             }
 
-            foreach ($request->self_help as $selfHelpId => $selfHelp) {
+            // Simpan self help
+            foreach ($request->self_help ?? [] as $selfHelpId => $selfHelp) {
+
                 if (empty($selfHelp['assistance'])) {
                     continue;
                 }
+
                 DailyReportSelfHelp::create([
                     'id'              => GenerateSelfHelpReportID::selfHelpReport(),
                     'daily_report_id' => $dailyReport->id,
                     'self_help_id'    => $selfHelpId,
-                    'assistance'      => $selfHelp['assistance']
+                    'assistance'      => $selfHelp['assistance'],
                 ]);
             }
 
+            // Simpan stimulation
             if ($request->filled('stimulations')) {
 
                 foreach ($request->stimulations as $itemId) {
 
                     DailyReportStimulation::create([
-                        'id'                    => Generate_ID::generateReportStimulationID(),
-                        'daily_report_id'       => $dailyReport->id,
-                        'stimulation_item_id'   => $itemId,
+                        'id'                  => Generate_ID::generateReportStimulationID(),
+                        'daily_report_id'     => $dailyReport->id,
+                        'stimulation_item_id' => $itemId,
                     ]);
                 }
             }
@@ -170,6 +218,7 @@ class DailyReportController extends Controller
             ->route('facilitator.daily-reports.index')
             ->with('success', 'Laporan berhasil disimpan.');
     }
+
     /**
      * Display the specified resource.
      */

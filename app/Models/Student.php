@@ -67,7 +67,7 @@ class Student extends Model
 
     public function facilitatorStudent()
     {
-        return $this->hasOne(
+        return $this->hasMany(
             FacilitatorStudent::class,
             'student_id',
             'id'
@@ -81,7 +81,10 @@ class Student extends Model
             'facilitator_student',
             'student_id',
             'facilitator_id'
-        )->withTimestamps();
+        )->withPivot([
+            'start_date',
+            'end_date',
+        ])->withTimestamps();
     }
 
     public function dailyReports()
