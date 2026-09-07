@@ -54,15 +54,10 @@ class FacilitatorStudentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'facilitator_id' => [
-                'required',
-                'exists:facilitators,id',
-            ],
-
-            'student_id' => [
-                'required',
-                'exists:students,id',
-            ],
+            'facilitator_id' => 'required|exists:facilitators,id',
+            'student_id'     => 'required|exists:students,id',
+            'start_date'     => 'required|date',
+            'end_date'       => 'nullable|date|after_or_equal:start_date',
         ]);
 
         // Cek apakah fasilitator sudah memiliki peserta didik
@@ -81,25 +76,29 @@ class FacilitatorStudentController extends Controller
         }
 
         // Cek apakah peserta didik sudah memiliki fasilitator
-        $studentExists = FacilitatorStudent::where(
-            'student_id',
-            $request->student_id
-        )->exists();
+        $exists = DB::table('facilitator_student')
+            ->where('facilitator_id', $request->facilitator_id)
+            ->where('student_id', $request->student_id)
+            ->whereNull('end_date')
+            ->exists();
 
-        if ($studentExists) {
+        if ($exists) {
             return back()
                 ->withInput()
                 ->withErrors([
-                    'student_id' =>
-                    'Peserta didik tersebut sudah memiliki fasilitator.'
+                    'student_id' => 'Peserta didik masih memiliki hubungan aktif dengan fasilitator tersebut.',
                 ]);
         }
 
         DB::transaction(function () use ($request) {
 
-            FacilitatorStudent::create([
+            DB::table('facilitator_student')->insert([
                 'facilitator_id' => $request->facilitator_id,
                 'student_id'     => $request->student_id,
+                'start_date'     => $request->start_date,
+                'end_date'       => $request->end_date,
+                'created_at'     => now(),
+                'updated_at'     => now(),
             ]);
         });
 
@@ -175,6 +174,17 @@ class FacilitatorStudentController extends Controller
                 'required',
                 'exists:students,id',
             ],
+
+            'start_date' => [
+                'required',
+                'date',
+            ],
+
+            'end_date' => [
+                'nullable',
+                'date',
+                'after_or_equal:start_date',
+            ],
         ]);
 
         // Cari hubungan yang sedang diedit
@@ -185,16 +195,31 @@ class FacilitatorStudentController extends Controller
         if (!$relation) {
             return redirect()
                 ->route('admin.facilitator-students.index')
-                ->with('error', 'Hubungan fasilitator dan peserta didik tidak ditemukan.');
+                ->with(
+                    'error',
+                    'Hubungan fasilitator dan peserta didik tidak ditemukan.'
+                );
         }
 
-        // Cek apakah fasilitator baru sudah memiliki peserta didik lain
+        /*
+    |--------------------------------------------------------------------------
+    | Cek fasilitator baru
+    |--------------------------------------------------------------------------
+    |
+    | Hanya hubungan yang masih aktif (end_date NULL)
+    | yang dianggap sebagai hubungan berjalan.
+    |
+    */
+
         $facilitatorExists = FacilitatorStudent::where(
             'facilitator_id',
             $request->facilitator_id
         )
+            ->whereNull('end_date')
             ->where(function ($query) use ($relation) {
-                $query->where('student_id', '!=', $relation->student_id);
+
+                $query->where('facilitator_id', '!=', $relation->facilitator_id)
+                    ->orWhere('student_id', '!=', $relation->student_id);
             })
             ->exists();
 
@@ -203,17 +228,25 @@ class FacilitatorStudentController extends Controller
                 ->withInput()
                 ->withErrors([
                     'facilitator_id' =>
-                    'Fasilitator tersebut sudah memiliki peserta didik.'
+                    'Fasilitator tersebut masih memiliki peserta didik aktif.'
                 ]);
         }
 
-        // Cek apakah peserta didik baru sudah memiliki fasilitator lain
+        /*
+    |--------------------------------------------------------------------------
+    | Cek peserta didik baru
+    |--------------------------------------------------------------------------
+    */
+
         $studentExists = FacilitatorStudent::where(
             'student_id',
             $request->student_id
         )
+            ->whereNull('end_date')
             ->where(function ($query) use ($relation) {
-                $query->where('facilitator_id', '!=', $relation->facilitator_id);
+
+                $query->where('facilitator_id', '!=', $relation->facilitator_id)
+                    ->orWhere('student_id', '!=', $relation->student_id);
             })
             ->exists();
 
@@ -222,14 +255,23 @@ class FacilitatorStudentController extends Controller
                 ->withInput()
                 ->withErrors([
                     'student_id' =>
-                    'Peserta didik tersebut sudah memiliki fasilitator.'
+                    'Peserta didik tersebut masih memiliki fasilitator aktif.'
                 ]);
         }
 
+        /*
+    |--------------------------------------------------------------------------
+    | Update hubungan
+    |--------------------------------------------------------------------------
+    */
+
         DB::transaction(function () use ($relation, $request) {
+
             $relation->update([
                 'facilitator_id' => $request->facilitator_id,
                 'student_id'     => $request->student_id,
+                'start_date'     => $request->start_date,
+                'end_date'       => $request->end_date,
             ]);
         });
 
@@ -240,7 +282,6 @@ class FacilitatorStudentController extends Controller
                 'Hubungan fasilitator dan peserta didik berhasil diperbarui.'
             );
     }
-
     /**
      * Remove the specified resource from storage.
      */

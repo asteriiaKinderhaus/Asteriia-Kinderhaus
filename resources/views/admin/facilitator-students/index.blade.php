@@ -40,6 +40,8 @@
                         <th width="60">No</th>
                         <th>Fasilitator</th>
                         <th>Peserta Didik</th>
+                        <th>Tanggal Mulai</th>
+                        <th>Tanggal Selesai</th>
                         <th width="150">Aksi</th>
                     </tr>
                 </thead>
@@ -49,6 +51,8 @@
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $item->facilitator->name ?? '-' }}</td>
                         <td>{{ $item->student->name ?? '-' }}</td>
+                        <td>{{ $item->start_date->format('d-m-Y') ?? '-' }}</td>
+                        <td>{{ $item->end_date->format('d-m-Y') ?? '-' }}</td>
                         <td class="text-center">
 
                             <a

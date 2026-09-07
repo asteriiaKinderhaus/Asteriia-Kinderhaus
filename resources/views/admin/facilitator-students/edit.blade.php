@@ -35,76 +35,110 @@
             @endif
 
             {{-- Fasilitator --}}
-            <div class="form-group">
-                <label for="facilitator_id">
-                    Fasilitator
-                </label>
+            <div class="form-group row">
+                <label for="facilitator_id" class="col-md-3 col-form-label">Fasilitator</label>
+                <div class="col-md-9">
+                    <select
+                        name="facilitator_id"
+                        id="facilitator_id"
+                        class="form-control @error('facilitator_id') is-invalid @enderror"
+                        required>
 
-                <select
-                    name="facilitator_id"
-                    id="facilitator_id"
-                    class="form-control @error('facilitator_id') is-invalid @enderror"
-                    required>
+                        <option value="">
+                            -- Pilih Fasilitator --
+                        </option>
 
-                    <option value="">
-                        -- Pilih Fasilitator --
-                    </option>
+                        @foreach ($facilitators as $facilitator)
 
-                    @foreach ($facilitators as $facilitator)
+                        <option
+                            value="{{ $facilitator->id }}"
+                            {{ old('facilitator_id', $relation->facilitator_id) == $facilitator->id ? 'selected' : '' }}>
+                            {{ $facilitator->name }}
+                        </option>
 
-                    <option
-                        value="{{ $facilitator->id }}"
-                        {{ old('facilitator_id', $relation->facilitator_id) == $facilitator->id ? 'selected' : '' }}>
-                        {{ $facilitator->name }}
-                    </option>
+                        @endforeach
 
-                    @endforeach
+                    </select>
 
-                </select>
-
-                @error('facilitator_id')
-                <div class="invalid-feedback">
-                    {{ $message }}
+                    @error('facilitator_id')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                    @enderror
                 </div>
-                @enderror
+            </div>
 
+            {{-- Peserta Didik --}}
+            <div class="form-group row">
+                <label for="student_id" class="col-md-3 col-form-label">Peserta Didik</label>
+                <div class="col-md-9">
+                    <select
+                        name="student_id"
+                        id="student_id"
+                        class="form-control @error('student_id') is-invalid @enderror"
+                        required>
+
+                        <option value="">
+                            -- Pilih Peserta Didik --
+                        </option>
+
+                        @foreach ($students as $student)
+
+                        <option
+                            value="{{ $student->id }}"
+                            {{ old('student_id', $relation->student_id) == $student->id ? 'selected' : '' }}>
+                            {{ $student->name }}
+                        </option>
+
+                        @endforeach
+
+                    </select>
+
+                    @error('student_id')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                    @enderror
+                </div>
             </div>
 
 
-            {{-- Peserta Didik --}}
-            <div class="form-group">
-                <label for="student_id">
-                    Peserta Didik
-                </label>
+            <div class="form-group row">
+                <label for="start_date" class="col-md-3 col-form-label">Tanggal Mulai</label>
+                <div class="col-md-9">
+                    <input
+                        type="date"
+                        name="start_date"
+                        id="start_date"
+                        class="form-control @error('start_date') is-invalid @enderror"
+                        value="{{ old('start_date', $relation->start_date?->format('Y-m-d')) }}"
+                        required>
 
-                <select
-                    name="student_id"
-                    id="student_id"
-                    class="form-control @error('student_id') is-invalid @enderror"
-                    required>
-
-                    <option value="">
-                        -- Pilih Peserta Didik --
-                    </option>
-
-                    @foreach ($students as $student)
-
-                    <option
-                        value="{{ $student->id }}"
-                        {{ old('student_id', $relation->student_id) == $student->id ? 'selected' : '' }}>
-                        {{ $student->name }}
-                    </option>
-
-                    @endforeach
-
-                </select>
-
-                @error('student_id')
-                <div class="invalid-feedback">
-                    {{ $message }}
+                    @error('start_date')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                    @enderror
                 </div>
-                @enderror
+            </div>
 
+            <div class="form-group row">
+                <label for="end_date" class="col-md-3 col-form-label">Tanggal Selesai</label>
+
+                <div class="col-md-9">
+                    <input
+                        type="date"
+                        name="end_date"
+                        id="end_date"
+                        class="form-control @error('end_date') is-invalid @enderror"
+                        value="{{ old('end_date', $relation->end_date?->format('Y-m-d')) }}">
+
+                    @error('end_date')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                    @enderror
+                </div>
             </div>
 
         </div>

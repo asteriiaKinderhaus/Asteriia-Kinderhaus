@@ -72,8 +72,45 @@
                     @enderror
                 </div>
             </div>
-        </div>
 
+            <div class="form-group row">
+                <label for="start_date" class="col-md-3 col-form-label">Tanggal Mulai</label>
+                <div class="col-md-9">
+                    <input
+                        type="date"
+                        name="start_date"
+                        id="start_date"
+                        class="form-control @error('start_date') is-invalid @enderror"
+                        value="{{ old('start_date') }}"
+                        required>
+
+                    @error('start_date')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="end_date" class="col-md-3 col-form-label">Tanggal Selesai</label>
+
+                <div class="col-md-9">
+                    <input
+                        type="date"
+                        name="end_date"
+                        id="end_date"
+                        class="form-control @error('end_date') is-invalid @enderror"
+                        value="{{ old('end_date') }}">
+
+                    @error('end_date')
+                    <span class="invalid-feedback">
+                        {{ $message }}
+                    </span>
+                    @enderror
+                </div>
+            </div>
+        </div>
         <div class="card-footer">
             <a href="{{ route('admin.facilitator-students.index') }}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i>

@@ -45,17 +45,10 @@ class FacilitatorController extends Controller
     public function create()
     {
         $genders = Gender::orderBy('gender')->get();
-        $students = Student::where('status', 1)
-            ->whereDoesntHave('facilitatorStudent')
-            ->orderBy('name')
-            ->get();
-        /*$students = Student::where('status', 1)
-            ->orderBy('name')
-            ->get();*/
 
         return view(
-            'admin.facilitators.create',
-            compact('genders', 'students')
+            'admin.facilitator.create',
+            compact('genders')
         );
     }
 
