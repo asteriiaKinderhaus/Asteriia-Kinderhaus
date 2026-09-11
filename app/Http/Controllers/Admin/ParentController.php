@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\ParentRequest;
 use App\Models\Gender;
 use App\Models\ParentModel;
 use App\Services\AccountService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AccountCreatedMail;
@@ -18,7 +19,7 @@ class ParentController extends Controller
 
     public function __construct(AccountService $accountService)
     {
-        $this->accountservice = $accountService;
+        $this->accountService = $accountService;
     }
     /**
      * Display a listing of the resource.
@@ -96,33 +97,23 @@ class ParentController extends Controller
                 'Orang tua berhasil ditambahkan dan informasi akun telah dikirim melalui email.'
             );
     }
-        /*DB::transaction(function () use ($request) {
 
-            // Simpan User
-            $user = User::create([
-                'id'       => GenerateId::make(User::class, 'USR'),
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'role_id'  => 'PAR',
-                'status'   => $request->status,
-            ]);
-
-            // Simpan Parent
-            ParentModel::create([
-                'id'         => GenerateId::make(ParentModel::class, 'PAR'),
-                'name'       => $request->name,
-                'address'    => $request->address,
-                'telephone'  => $request->telephone,
-                'email'      => $request->email,
-                'gender_id'  => $request->gender_id,
-                'user_id'    => $user->id,
-            ]);
-        });
-
-        return redirect()
-            ->route('admin.parents.index')
-            ->with('success', 'Parent successfully added.');*/
-
+    /* |--------------------------------------------------------------------------
+    |    Search |-------------------------------------------------------------------------- |
+    | Digunakan oleh AJAX autocomplete pada form pendaftaran peserta didik. | */
+    public function search(Request $request)
+    {
+        $keyword = trim($request->input('q', ''));
+        /* * Jangan melakukan pencarian jika karakter kurang dari 2. */
+        if (strlen($keyword) < 2) {
+            return response()->json([]);
+        }
+        $parents = ParentModel::query()->where('name', 'like', '%' . $keyword . '%')
+            ->orderBy('name')
+            ->limit(10)
+            ->get(['id', 'name', 'address', 'telephone', 'email', 'gender_id',]);
+        return response()->json($parents);
+    }
 
     /**
      * Display the specified resource.

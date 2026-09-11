@@ -349,35 +349,17 @@ return [
                     'icon' => 'fas fa-users',
                 ],
 
-                /*[
-                    'text' => 'Fasilitator-Kelas',
-                    'route' => 'admin.school-classes.index',
-                    'icon' => 'fas fa-chalkboard-teacher',
-                ],*/
-
                 [
                     'text' => 'Fasilitator-Peserta Didik',
                     'route' => 'admin.facilitator-students.index',
                     'icon' => 'fas fa-user-friends',
                 ],
 
-                /*[
-                    'text' => 'Kelas',
-                    'route'  => 'admin.class-name.index',
-                    'icon' => 'fas fa-school',
-                ],*/
-
                 [
                     'text' => 'Fasilitator',
                     'route' => 'admin.facilitators.index',
                     'icon' => 'fas fa-chalkboard-teacher',
                 ],
-
-                /*[
-                    'text' => 'Kelas',
-                    'route' => 'admin.classes.index',
-                    'icon' => 'fas fa-chalkboard-teacher',
-                ],*/
 
                 [
                     'text' => 'Orang Tua',
