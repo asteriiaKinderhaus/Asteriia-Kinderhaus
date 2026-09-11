@@ -403,7 +403,7 @@ return [
             ],
         ],
 
-        [
+        /*[
             'header' => 'AKTIVITAS',
             'can' => 'ADM',
         ],
@@ -433,7 +433,7 @@ return [
                 ],
 
             ],
-        ],
+        ],*/
 
         [
             'header' => 'LAPORAN',
@@ -446,12 +446,12 @@ return [
             'icon' => 'fas fa-book-open',
             'can' => 'ADM',
         ],
-        [
+        /*[
             'text' => 'Perkembangan Anak',
             'url'  => '#',
             'icon' => 'fas fa-chart-line',
             'can' => 'ADM',
-        ],
+        ],*/
 
 
         [
