@@ -35,11 +35,9 @@
             </h5>
 
             <div class="row">
-
                 {{-- Nama --}}
                 <div class="col-md-6">
                     <div class="form-group">
-
                         <label for="student_name">
                             Nama Peserta Didik
                             <span class="text-danger">*</span>
@@ -59,7 +57,6 @@
                             {{ $message }}
                         </div>
                         @enderror
-
                     </div>
                 </div>
 

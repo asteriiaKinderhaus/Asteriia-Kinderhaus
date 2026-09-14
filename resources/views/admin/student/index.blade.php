@@ -35,60 +35,62 @@
     </div>
 
     <div class="card-body">
-        <table id="studentTable"
-            class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th width="40">No</th>
-                    <th>Nama siswa</th>
-                    <th>Tempat & Tanggal Lahir</th>
-                    <th>Jenis Kelamin</th>
-                    <th>Nama Orang Tua</th>
-                    <th>Status</th>
-                    <th width="130">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($students as $student)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $student->name }}</td>
-                    <td>{{ $student->birth_place . ', ' . $student->birth_date->format('d-m-Y') }}</td>
-                    <td>{{ $student->gender->gender ?? '-' }}</td>
-                    <td>{{ $student->parent->name ?? '-' }}</td>
-                    <td>
-                        @if($student->status)
-                        <span class="badge badge-success">
-                            Active
-                        </span>
-                        @else
-                        <span class="badge badge-danger">
-                            Inactive
-                        </span>
-                        @endif
-                    </td>
-                    <td>
-                        
-                        <a href="{{ route('admin.students.edit',$student->id) }}"
-                            class="btn btn-warning btn-sm">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="{{ route('admin.students.toggle-status', $student->id) }}"
-                            method="POST"
-                            class="d-inline">
-                            @csrf
-                            @method('PATCH')
-                            <button
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Apakah Anda yakin ingin mengubah status siswa ini?') ">
-                                <i class="fas fa-user-slash"></i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table id="studentTable"
+                class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th width="40">No</th>
+                        <th>Nama siswa</th>
+                        <th>Tempat & Tanggal Lahir</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Nama Orang Tua</th>
+                        <th>Status</th>
+                        <th width="130">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($students as $student)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $student->name }}</td>
+                        <td>{{ $student->birth_place . ', ' . $student->birth_date->format('d-m-Y') }}</td>
+                        <td>{{ $student->gender->gender ?? '-' }}</td>
+                        <td>{{ $student->parent->name ?? '-' }}</td>
+                        <td>
+                            @if($student->status)
+                            <span class="badge badge-success">
+                                Active
+                            </span>
+                            @else
+                            <span class="badge badge-danger">
+                                Inactive
+                            </span>
+                            @endif
+                        </td>
+                        <td>
+
+                            <a href="{{ route('admin.students.edit',$student->id) }}"
+                                class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ route('admin.students.toggle-status', $student->id) }}"
+                                method="POST"
+                                class="d-inline">
+                                @csrf
+                                @method('PATCH')
+                                <button
+                                    class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Apakah Anda yakin ingin mengubah status siswa ini?') ">
+                                    <i class="fas fa-user-slash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

@@ -7,49 +7,49 @@
     </div>
 
     <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
 
-        <table class="table table-bordered">
+                <thead>
 
-            <thead>
+                    <tr>
+                        <th>Aktivitas</th>
+                        <th class="text-center">Mandiri</th>
+                        <th class="text-center">Bantuan</th>
+                    </tr>
 
-                <tr>
-                    <th>Aktivitas</th>
-                    <th class="text-center">Mandiri</th>
-                    <th class="text-center">Bantuan</th>
-                </tr>
+                </thead>
 
-            </thead>
+                <tbody>
 
-            <tbody>
+                    @foreach($selfHelps as $selfHelp)
 
-                @foreach($selfHelps as $selfHelp)
+                    <tr>
 
-                <tr>
+                        <td>{{ $selfHelp->name }}</td>
 
-                    <td>{{ $selfHelp->name }}</td>
+                        <td class="text-center">
+                            <input
+                                type="radio"
+                                name="self_help[{{ $selfHelp->id }}][assistance]"
+                                value="MANDIRI">
+                        </td>
 
-                    <td class="text-center">
-                        <input
-                            type="radio"
-                            name="self_help[{{ $selfHelp->id }}][assistance]"
-                            value="MANDIRI">
-                    </td>
+                        <td class="text-center">
+                            <input
+                                type="radio"
+                                name="self_help[{{ $selfHelp->id }}][assistance]"
+                                value="BANTUAN">
+                        </td>
 
-                    <td class="text-center">
-                        <input
-                            type="radio"
-                            name="self_help[{{ $selfHelp->id }}][assistance]"
-                            value="BANTUAN">
-                    </td>
+                    </tr>
 
-                </tr>
+                    @endforeach
 
-                @endforeach
+                </tbody>
 
-            </tbody>
-
-        </table>
-
+            </table>
+        </div>
     </div>
 
 </div>

@@ -52,10 +52,26 @@ class DailyReportController extends Controller
 
         // Peserta didik yang saat ini aktif menjadi tanggung jawab fasilitator
         $students = $facilitator->facilitatorStudents()
-            ->whereNull('end_date')
+            ->whereDate('start_date', '<=', now())
+            ->where(function ($query) {
+                $query->whereNull('end_date')
+                    ->orWhereDate('end_date', '>=', now());
+            })
             ->with('student')
             ->get()
             ->sortBy(fn($relation) => $relation->student?->name);
+
+        /*dd(
+            $students->map(function ($assignment) {
+                return [
+                    'facilitator_id' => $assignment->facilitator_id,
+                    'student_id' => $assignment->student_id,
+                    'student_name' => $assignment->student?->name,
+                    'start_date' => $assignment->start_date,
+                    'end_date' => $assignment->end_date,
+                ];
+            })->values()->toArray()
+        );*/
 
         // Jika tidak ada peserta didik yang terhubung
         if ($students->isEmpty()) {

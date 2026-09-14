@@ -18,57 +18,59 @@
     </div>
 
     <div class="card-body">
-        <table id="reportTable" class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Tanggal</th>
-                    <th>Nama siswa</th>
-                    <th>Status</th>
-                    <th width="150">Aksi</th>
-                </tr>
-            </thead>
+        <div class="table-responsive">
+            <table id="reportTable" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Nama siswa</th>
+                        <th>Status</th>
+                        <th width="150">Aksi</th>
+                    </tr>
+                </thead>
 
-            <tbody>
-                @forelse($reports as $report)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ \Carbon\Carbon::parse($report->report_date)->format('d-m-Y') }}</td>
-                    <td>{{ $report->student->name }}</td>
-                    <td>
-                        @if($report->status == 0)
-                        <span class="badge badge-secondary">
-                            Draft
-                        </span>
-                        @else
-                        <span class="badge badge-success">
-                            Published
-                        </span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{ route('facilitator.daily-reports.show', $report->id) }}"
-                            class="btn btn-sm btn-info">
-                            <i class="fas fa-eye"></i>
-                        </a>
+                <tbody>
+                    @forelse($reports as $report)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ \Carbon\Carbon::parse($report->report_date)->format('d-m-Y') }}</td>
+                        <td>{{ $report->student->name }}</td>
+                        <td>
+                            @if($report->status == 0)
+                            <span class="badge badge-secondary">
+                                Draft
+                            </span>
+                            @else
+                            <span class="badge badge-success">
+                                Published
+                            </span>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('facilitator.daily-reports.show', $report->id) }}"
+                                class="btn btn-sm btn-info">
+                                <i class="fas fa-eye"></i>
+                            </a>
 
-                        <a href="{{ route('facilitator.daily-reports.edit', $report->id) }}"
-                            class="btn btn-sm btn-warning">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    </td>
-                </tr>
+                            <a href="{{ route('facilitator.daily-reports.edit', $report->id) }}"
+                                class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
 
-                @empty
-                <tr>
-                    <td colspan="5" class="text-center">
-                        No report yet.
-                    </td>
-                </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            No report yet.
+                        </td>
+                    </tr>
 
-                @endforelse
-            </tbody>
-        </table>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 

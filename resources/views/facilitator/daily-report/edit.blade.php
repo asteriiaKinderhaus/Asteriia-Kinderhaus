@@ -1,25 +1,19 @@
 @extends('adminlte::page')
-
 @section('title', 'Edit Daily Report')
-
-
 
 @section('content_header')
 <h1>Edit Laporan Harian Anak</h1>
 @stop
 
 @section('content')
-
 <form
     action="{{ route('facilitator.daily-reports.update', $dailyReport->id) }}"
     method="POST">
     @csrf
     @method('PUT')
-
     {{-- ========================================================= --}}
     {{-- INFORMASI LAPORAN                                         --}}
     {{-- ========================================================= --}}
-
     <div class="sticky-report">
         <div class="card">
             <div class="card-header">
@@ -28,49 +22,39 @@
                     Informasi Laporan
                 </h3>
             </div>
-
             <div class="card-body">
-
                 <div class="row mb-3">
                     <div class="col-md-3 font-weight-bold">
                         Tanggal
                     </div>
-
                     <div class="col-md-9">
                         {{ $dailyReport->report_date->format('d F Y') }}
                     </div>
                 </div>
-
                 <div class="row mb-3">
                     <div class="col-md-3 font-weight-bold">
                         Nama Anak
                     </div>
-
                     <div class="col-md-9">
                         {{ $dailyReport->student->name }}
                     </div>
                 </div>
-
                 <div class="row mb-3">
                     <div class="col-md-3 font-weight-bold">
                         Kelas
                     </div>
-
                     <div class="col-md-9">
                         {{ $dailyReport->student->schoolClass->name ?? '-' }}
                     </div>
                 </div>
-
                 <div class="row mb-3">
                     <div class="col-md-3 font-weight-bold">
                         Fasilitator
                     </div>
-
                     <div class="col-md-9">
                         {{ $dailyReport->facilitator->name }}
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
