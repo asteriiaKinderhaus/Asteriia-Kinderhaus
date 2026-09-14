@@ -265,14 +265,17 @@ class FacilitatorStudentController extends Controller
     |--------------------------------------------------------------------------
     */
 
+
         DB::transaction(function () use ($relation, $request) {
 
-            $relation->update([
-                'facilitator_id' => $request->facilitator_id,
-                'student_id'     => $request->student_id,
-                'start_date'     => $request->start_date,
-                'end_date'       => $request->end_date,
-            ]);
+            FacilitatorStudent::where('facilitator_id', $relation->facilitator_id)
+                ->where('student_id', $relation->student_id)
+                ->update([
+                    'facilitator_id' => $request->facilitator_id,
+                    'student_id'     => $request->student_id,
+                    'start_date'     => $request->start_date,
+                    'end_date'       => $request->end_date,
+                ]);
         });
 
         return redirect()
