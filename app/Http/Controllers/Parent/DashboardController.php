@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ParentModel;
 use App\Models\DailyReport;
+use App\Models\Student;
 
 class DashboardController extends Controller
 {
@@ -13,10 +14,15 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $parent = ParentModel::with('students.schoolClass.facilitators')
+        $parent = ParentModel::with(
+            'students.facilitatorStudents.facilitator'
+        )
             ->where('user_id', $user->id)
             ->first();
-
+        /*$parent = ParentModel::with('students.schoolClass.facilitators')
+            ->where('user_id', $user->id)
+            ->first();*/
+        dd($parent->students->first()->facilitatorStudents);
         $reports = DailyReport::with([
             'student',
             'facilitator'

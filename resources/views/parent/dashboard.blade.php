@@ -63,20 +63,14 @@
     </div>
 
     <div class="card-body">
-
         <table class="table table-bordered">
-
             <thead>
-
                 <tr>
-
                     <th>No</th>
                     <th>Nama Anak</th>
-                    <th>Nama Kelas</th>
                     <th>Nama Fasilitator</th>
-
+                    <th>Nama Kelas</th>
                 </tr>
-
             </thead>
 
             <tbody>
@@ -84,7 +78,6 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $student->name }} </td>
-                    <td>{{ $student->schoolClass->name }} </td>
                     <td> @foreach($student->schoolClass->facilitators as $facilitator)
 
                         {{ $facilitator->name }}
@@ -94,6 +87,7 @@
 
                         @endforeach
                     </td>
+                    <td>{{ $student->schoolClass->name }} </td>
                 </tr>
                 @endforeach
             </tbody>

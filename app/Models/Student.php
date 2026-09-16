@@ -65,7 +65,7 @@ class Student extends Model
         );
     }
 
-    public function facilitatorStudent()
+    public function facilitatorStudents()
     {
         return $this->hasMany(
             FacilitatorStudent::class,
