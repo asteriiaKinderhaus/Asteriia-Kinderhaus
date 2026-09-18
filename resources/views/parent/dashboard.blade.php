@@ -68,8 +68,10 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Anak</th>
-                    <th>Nama Fasilitator</th>
-                    <th>Nama Kelas</th>
+                    <th>Tanggl Lahir</th>
+                    <th>Jenis Kelamin</th>
+                    <!--<th>Nama Fasilitator</th>
+                    <th>Nama Kelas</th>-->
                 </tr>
             </thead>
 
@@ -78,16 +80,8 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $student->name }} </td>
-                    <td> @foreach($student->schoolClass->facilitators as $facilitator)
-
-                        {{ $facilitator->name }}
-
-                        @unless($loop->last),
-                        @endunless
-
-                        @endforeach
-                    </td>
-                    <td>{{ $student->schoolClass->name }} </td>
+                    <td> {{ $student->birth_date->format('d-m-Y') }} </td>
+                    <td> {{ $student->gender->gender ?? '-' }} </td>
                 </tr>
                 @endforeach
             </tbody>

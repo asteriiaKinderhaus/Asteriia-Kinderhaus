@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Facilitator;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Facilitator;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -12,9 +13,18 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        $facilitator = Facilitator::with('schoolClasses')
+        $facilitator = Facilitator::with([
+            'facilitatorStudents' => function ($query) {
+                $query->whereDate('start_date', '<=', Carbon::today())
+                    ->where(function ($q) {
+                        $q->whereNull('end_date')
+                            ->orWhereDate('end_date', '>=', Carbon::today());
+                    })
+                    ->with('student');
+            }
+        ])
             ->where('user_id', $user->id)
-            ->first();
+            ->firstOrFail();
 
         return view(
             'facilitator.dashboard',

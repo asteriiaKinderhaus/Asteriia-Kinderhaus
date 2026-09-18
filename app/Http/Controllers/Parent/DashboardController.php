@@ -13,19 +13,11 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        $parent = ParentModel::with(
-            'students.facilitatorStudents.facilitator'
-        )
+        $parent = ParentModel::with('students')
             ->where('user_id', $user->id)
             ->first();
-        /*$parent = ParentModel::with('students.schoolClass.facilitators')
-            ->where('user_id', $user->id)
-            ->first();*/
-        dd($parent->students->first()->facilitatorStudents);
         $reports = DailyReport::with([
-            'student',
-            'facilitator'
+            'student'
         ])
             ->whereIn(
                 'student_id',

@@ -21,39 +21,23 @@
 @endif
 
 <div class="card">
-
     <div class="card-header">
-
         <h3 class="card-title">
             Data Fasilitator
         </h3>
-
         <div class="card-tools">
-
             <a href="{{ route('admin.facilitators.create') }}"
                 class="btn btn-primary">
-
-                <i class="fas fa-plus"></i>
-
-                Tambah Fasilitator
-
-            </a>
-
+                <i class="fas fa-plus"></i>Tambah Fasilitator</a>
         </div>
-
     </div>
 
     <div class="card-body">
-
         <table id="facilitatorTable"
             class="table table-bordered table-striped">
-
             <thead>
-
                 <tr>
-
                     <th width="5%">No</th>
-
                     <th>Nama</th>
                     <th>Tanggal lahir</th>
                     <th>Email</th>
@@ -61,17 +45,12 @@
                     <th>Jenis Kelamin</th>
                     <th>Status</th>
                     <th width="18%">Aksi</th>
-
                 </tr>
-
             </thead>
 
             <tbody>
-
                 @forelse($facilitators as $key => $facilitator)
-
                 <tr>
-
                     <td>{{ $key + 1 }}</td>
                     <td>{{ $facilitator->name }}</td>
                     <td>{{ date('d-m-Y', strtotime($facilitator->birth_date)) }} </td>
@@ -96,37 +75,20 @@
                         </a>
                         <a href="{{ route('admin.facilitators.edit',$facilitator->id) }}"
                             class="btn btn-warning btn-sm">
-
                             <i class="fas fa-edit"></i>
-
                         </a>
-
-                        
                     </td>
-
                 </tr>
-
                 @empty
-
                 <tr>
-
-                    <td colspan="8"
-                        class="text-center">
-
-                        No data available
-
-                    </td>
-
+                    <td colspan="8" class="text-center"> No data available </td>
                 </tr>
 
                 @endforelse
 
             </tbody>
-
         </table>
-
     </div>
-
 </div>
 
 @stop
