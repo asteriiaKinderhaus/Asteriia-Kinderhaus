@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class LoginRequest extends FormRequest
 {
@@ -42,6 +43,17 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        // Cek koneksi database sebelum proses login
+        try {
+            DB::connection()->getPdo();
+            DB::connection()->getDatabaseName();
+        } catch (\Throwable $e) {
+            throw ValidationException::withMessages([
+                'username' => 'Koneksi ke database bermasalah. Silakan coba lagi beberapa saat.',
+            ]);
+        }
+
+        //Proses Autentikasi
         if (! Auth::attempt($this->only('username', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
