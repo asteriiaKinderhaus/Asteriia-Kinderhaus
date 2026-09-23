@@ -62,7 +62,8 @@
                     <th>Nama Peserta Didik</th>
                     <th>Tanggal lahir</th>
                     <th>Jenis Kelamin</th>
-                    <th>Tanggal Mulai</th>
+                    <th>Mulai Penugasan</th>
+                    <th>Akhir Penugasan</th>
                 </tr>
             </thead>
 
@@ -72,14 +73,11 @@
 
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-
                     <td>{{ $assignment->student->name }}</td>
-
                     <td>{{ \Carbon\Carbon::parse($assignment->student->birth_date)->format('d-m-Y') }}</td>
-
                     <td>{{ $assignment->student->gender->gender ?? '-' }}</td>
-
                     <td>{{ \Carbon\Carbon::parse($assignment->start_date)->format('d-m-Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($assignment->end_date)->format('d-m-Y') }}</td>
                 </tr>
 
                 @endforeach

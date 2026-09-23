@@ -12,19 +12,41 @@ class DailyReportController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $reports = DailyReport::with([
+        // Ambil daftar tahun yang tersedia dari laporan
+        $years = DailyReport::query()
+            ->selectRaw('YEAR(report_date) as year')
+            ->whereNotNull('report_date')
+            ->distinct()
+            ->orderByDesc('year')
+            ->pluck('year');
+
+        // Query laporan
+        $query = DailyReport::with([
             'student',
             'schoolClass',
             'facilitator'
-        ])
+        ]);
+
+        // Filter tahun
+        if ($request->filled('year')) {
+            $query->whereYear('report_date', $request->year);
+        }
+
+        // Filter bulan
+        if ($request->filled('month')) {
+            $query->whereMonth('report_date', $request->month);
+        }
+
+        // Urutkan berdasarkan tanggal terbaru
+        $reports = $query
             ->orderByDesc('report_date')
             ->get();
 
         return view(
             'admin.daily-report.index',
-            compact('reports')
+            compact('reports', 'years')
         );
     }
 
