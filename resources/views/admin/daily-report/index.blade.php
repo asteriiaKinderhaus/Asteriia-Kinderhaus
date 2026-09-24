@@ -117,7 +117,6 @@
                     <th>Tanggal</th>
                     <th>Siswa</th>
                     <th>Fasilitator</th>
-                    <th>Status</th>
                     <th width="150">Action</th>
                 </tr>
             </thead>
@@ -131,19 +130,8 @@
                     <td>{{ $report->student->name ?? '-' }}</td>
                     <td>{{ $report->facilitator->name ?? '-' }}</td>
                     <td>
-                        @if($report->status)
-                        <span class="badge badge-success">Published</span>
-                        @else
-                        <span class="badge badge-secondary">Draft</span>
-                        @endif
-                    </td>
-                    <td>
                         <a href="{{ route('admin.daily-reports.show',$report->id) }}" class="btn btn-info btn-sm">
                             <i class="fas fa-eye"></i>
-                        </a>
-
-                        <a href="{{ route('admin.daily-reports.edit',$report->id) }}" class="btn btn-warning btn-sm">
-                            <i class="fas fa-edit"></i>
                         </a>
                     </td>
                 </tr>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Student;
 use App\Models\Facilitator;
 use App\Models\ParentModel;   // atau Parent jika model Anda bernama Parent
-use App\Models\SchoolClass;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -15,13 +15,23 @@ class DashboardController extends Controller
         $studentCount      = Student::count();
         $facilitatorCount  = Facilitator::count();
         $parentCount       = ParentModel::count();   // sesuaikan nama model
-        //$classCount        = SchoolClass::count();
 
         return view('admin.dashboard', compact(
             'studentCount',
             'facilitatorCount',
             'parentCount'
-            //'classCount'
+        ));
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+
+        $admin = $user->admin;
+
+        return view('admin.profile', compact(
+            'user',
+            'admin'
         ));
     }
 }

@@ -66,8 +66,8 @@ Route::middleware(['auth', 'role:ADM'])
         Route::resource('users', UserController::class);
         Route::resource('facilitators', FacilitatorController::class);
         Route::resource('students', StudentController::class);
-        Route::get( 'parents/search', [ParentController::class, 'search'] )
-                ->name('parents.search');
+        Route::get('parents/search', [ParentController::class, 'search'])
+            ->name('parents.search');
         Route::resource('parents', ParentController::class);
         Route::resource('school-classes', SchoolClassController::class);
         Route::resource('meals', MealController::class);
@@ -77,7 +77,7 @@ Route::middleware(['auth', 'role:ADM'])
         Route::resource('brain-gym', BrainGymController::class);
         Route::resource('stimulation', StimulationController::class);
         Route::get('/facilitator-students', [FacilitatorStudentController::class, 'index'])
-                ->name('facilitator-students.index');
+            ->name('facilitator-students.index');
 
         Route::get(
             '/facilitator-students/create',
@@ -106,6 +106,9 @@ Route::middleware(['auth', 'role:ADM'])
 
         Route::patch('/students/{student}/toggle-status', [StudentController::class, 'toggleStatus'])
             ->name('students.toggle-status');
+
+        Route::get('/profile', [AdminDashboardController::class, 'profile'])
+            ->name('profile');
     });
 
 /*

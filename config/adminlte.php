@@ -459,29 +459,9 @@ return [
             'can' => 'ADM',
         ],
 
-        /*[
-            'text' => 'Pengaturan',
-            'icon' => 'fas fa-cogs',
-            //'can' => 'ADM',
-            'submenu' =>
-
-            [
-                'text' => 'Profil Sekolah',
-                'url'  => '#',
-                'icon' => 'fas fa-school',
-            ],
-
-            [
-                'text' => 'Backup Database',
-                'url'  => '#',
-                'icon' => 'fas fa-database',
-            ],
-
-
-        ],*/
         [
             'text' => 'Profile',
-            'url'  => '#',
+            'url'  => 'admin/profile',
             'icon' => 'fas fa-user',
             'can' => 'ADM',
         ],

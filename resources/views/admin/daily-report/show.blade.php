@@ -57,21 +57,21 @@
                 {{-- Baris 2 --}}
                 <div class="col-md-6 mb-4">
                     <div class="row">
-                        <div class="col-sm-4 font-weight-bold">Kelas</div>
-                        <div class="col-sm-8">
-                            {{ $dailyReport->student->schoolClass->name }}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-4">
-                    <div class="row">
                         <div class="col-sm-4 font-weight-bold">Fasilitator</div>
                         <div class="col-sm-8">
                             {{ $dailyReport->facilitator->name }}
                         </div>
                     </div>
                 </div>
+                <div class="col-md-6 mb-4">
+                    <div class="row">
+                        <div class="col-sm-4 font-weight-bold">Tanggal Lahir</div>
+                        <div class="col-sm-8">
+                            {{ $dailyReport->student->birth_date->format('d-m-Y') }}
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
 
