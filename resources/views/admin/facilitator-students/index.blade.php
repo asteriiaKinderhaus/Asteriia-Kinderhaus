@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 @section('title', 'Fasilitator - Peserta Didik')
-@section('content_header') <h1>Fasilitator - Peserta Didik</h1>
+@section('content_header') <h1>Penugasan Fasilitator - Peserta Didik</h1>
 @stop
 
 @section('content')
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">
-            Daftar Hubungan Fasilitator - Peserta Didik
+            Daftar Penugasan Fasilitator - Peserta Didik
         </h3>
 
         <div class="card-tools">
