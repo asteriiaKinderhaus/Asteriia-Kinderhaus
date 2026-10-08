@@ -47,4 +47,12 @@ class MealController extends Controller
             ->route('admin.meals.index')
             ->with('success', 'Meal successfully added.');
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Meal $meal)
+    {
+        return view('admin.meal.edit', compact('meal'));
+    }
 }

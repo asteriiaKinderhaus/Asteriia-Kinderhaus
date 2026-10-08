@@ -71,7 +71,7 @@
 
                     <td>
 
-                        <a href=""
+                        <a href="{{ route('admin.selfhelp.edit',$row) }}"
                             class="btn btn-warning btn-sm">
 
                             <i class="fas fa-edit"></i>
