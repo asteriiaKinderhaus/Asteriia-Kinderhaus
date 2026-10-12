@@ -10,7 +10,7 @@
         Master Self Help
     </h1>
 
-    <a href=""
+    <a href="{{ route('admin.selfhelp.create') }}"
         class="btn btn-primary">
 
         <i class="fas fa-plus"></i>

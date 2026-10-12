@@ -22,7 +22,7 @@ class SelfHelpController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.selfhelp.create');
     }
 
     /**
