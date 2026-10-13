@@ -8,7 +8,7 @@
 
     <a href="{{ route('admin.selfhelp.index') }}" class="btn btn-secondary">
         <i class="fas fa-arrow-left"></i>
-        Back
+        Kembali
     </a>
 </div>
 @stop
@@ -17,7 +17,7 @@
 
 <div class="card card-primary">
     <div class="card-header">
-        <h3 class="card-title">Self Help Form</h3>
+        <h3 class="card-title">Form Self Help</h3>
     </div>
 
     <form action="{{ route('admin.selfhelp.store') }}" method="POST">
@@ -27,34 +27,16 @@
 
             {{-- Self Help Name --}}
             <div class="form-group">
-                <label>Meal Name <span class="text-danger">*</span></label>
+                <label>Nama Self Help <span class="text-danger">*</span></label>
 
                 <input
                     type="text"
                     name="name"
                     class="form-control @error('name') is-invalid @enderror"
                     value="{{ old('name') }}"
-                    placeholder="Enter meal name">
+                    placeholder="Masukkan nama self-help">
 
                 @error('name')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-                @enderror
-            </div>
-
-            {{-- Order --}}
-            <div class="form-group">
-                <label>Order <span class="text-danger">*</span></label>
-
-                <input
-                    type="number"
-                    name="order_no"
-                    class="form-control @error('order_no') is-invalid @enderror"
-                    value="{{ old('order_no') }}"
-                    min="1">
-
-                @error('order_no')
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>

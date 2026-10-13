@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SelfHelp;
+use App\Helpers\GenerateId;
 
 class SelfHelpController extends Controller
 {
@@ -13,7 +14,7 @@ class SelfHelpController extends Controller
      */
     public function index()
     {
-        $selfhelp = SelfHelp::orderBy('id')->get();
+        $selfhelp = SelfHelp::orderBy('id', 'asc')->get();
         return view('admin.selfhelp.index', compact('selfhelp'));
     }
 
@@ -30,7 +31,20 @@ class SelfHelpController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:100',
+            'status' => 'required|boolean',
+        ]);
+
+        SelfHelp::create([
+            'id' => GenerateId::make(SelfHelp::class, 'SH'),
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+
+        return redirect()
+            ->route('admin.selfhelp.index')
+            ->with('success', 'Self-help item berhasil ditambahkan.');
     }
 
     /**
