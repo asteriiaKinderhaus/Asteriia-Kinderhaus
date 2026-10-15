@@ -68,7 +68,15 @@ class SelfHelpController extends Controller
      */
     public function update(Request $request, SelfHelp $selfhelp)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        $selfhelp->update($validated);
+
+        return redirect()
+            ->route('admin.selfhelp.index')
+            ->with('success', 'Data self-help berhasil diperbarui.');
     }
 
     /**

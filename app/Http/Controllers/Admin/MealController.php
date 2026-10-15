@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Meal;
 use App\http\Requests\Admin\MealRequest;
 use App\Helpers\GenerateId;
+use Illuminate\Http\Request;
 
 class MealController extends Controller
 {
@@ -51,5 +52,18 @@ class MealController extends Controller
     public function edit(Meal $meal)
     {
         return view('admin.meal.edit', compact('meal'));
+    }
+
+    public function update(Request $request, Meal $meal)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+        ]);
+
+        $meal->update($validated);
+
+        return redirect()
+            ->route('admin.meals.index')
+            ->with('success', 'Data makanan berhasil diperbarui.');
     }
 }
