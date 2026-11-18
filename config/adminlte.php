@@ -446,13 +446,12 @@ return [
             'icon' => 'fas fa-book-open',
             'can' => 'ADM',
         ],
-        /*[
-            'text' => 'Perkembangan Anak',
-            'url'  => '#',
-            'icon' => 'fas fa-chart-line',
+        [
+            'text' => 'Rekap Absensi',
+            'url' => 'admin/attendances',
+            'icon' => 'fas fa-fw fa-calendar-check',
             'can' => 'ADM',
-        ],*/
-
+        ],
 
         [
             'header' => 'PENGATURAN',
@@ -504,6 +503,13 @@ return [
             'text' => 'Laporan Harian',
             'url'  => 'facilitator/daily-reports',
             'icon' => 'fas fa-book',
+            'can'  => 'FAS',
+        ],
+
+        [
+            'text' => 'Absensi',
+            'url'  => 'facilitator/attendances',
+            'icon' => 'fas fa-fw fa-calendar-check',
             'can'  => 'FAS',
         ],
 
@@ -564,22 +570,16 @@ return [
                     'route' => 'parent.daily_reports.index',
                     'icon' => 'fas fa-book-open',
                 ],
+
+                [
+                    'text' => 'Riwayat Absensi',
+                    'route' => 'parent.attendances.index',
+                    'icon' => 'fas fa-fw fa-calendar-check',
+                ],
             ],
         ],
 
-        [
-            'text' => 'Daily Report',
-            //'route' => '#',
-            'icon' => 'fas fa-book-open',
-            'can' => 'PAR',
-        ],
 
-        [
-            'text' => 'Perkembangan Anak',
-            //'route' => '#',
-            'icon' => 'fas fa-chart-line',
-            'can' => 'PAR',
-        ],
 
         [
             'header' => 'AKUN',

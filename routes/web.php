@@ -22,12 +22,14 @@ use App\Http\Controllers\Admin\SelfHelpController;
 use App\Http\Controllers\Admin\BrainGymController;
 use App\Http\Controllers\Admin\StimulationController;
 use App\Http\Controllers\Admin\FacilitatorStudentController;
-
+use App\Http\Controllers\Admin\AttendanceController as AdminAttendanceController;
 // Facilitator Controller
 use App\Http\Controllers\Facilitator\DailyReportController as FacilitatorDailyReportController;
+use App\Http\Controllers\Facilitator\AttendanceController as FacilitatorAttendanceController;
 
 // Parent Controller
 use App\Http\Controllers\Parent\DailyReportController as ParentDailyReportController;
+use App\Http\Controllers\Parent\AttendanceController as ParentAttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,20 +81,14 @@ Route::middleware(['auth', 'role:ADM'])
         Route::get('/facilitator-students', [FacilitatorStudentController::class, 'index'])
             ->name('facilitator-students.index');
 
-        Route::get(
-            '/facilitator-students/create',
-            [FacilitatorStudentController::class, 'create']
-        )->name('facilitator-students.create');
+        Route::get('/facilitator-students/create', [FacilitatorStudentController::class, 'create'])
+            ->name('facilitator-students.create');
 
-        Route::post(
-            '/facilitator-students',
-            [FacilitatorStudentController::class, 'store']
-        )->name('facilitator-students.store');
+        Route::post('/facilitator-students', [FacilitatorStudentController::class, 'store'])
+            ->name('facilitator-students.store');
 
-        Route::get(
-            '/facilitator-students/{facilitator_id}/{student_id}/edit',
-            [FacilitatorStudentController::class, 'edit']
-        )->name('facilitator-students.edit');
+        Route::get('/facilitator-students/{facilitator_id}/{student_id}/edit', [FacilitatorStudentController::class, 'edit'])
+            ->name('facilitator-students.edit');
 
         Route::put(
             '/facilitator-students/{facilitator_id}/{student_id}',
@@ -107,8 +103,8 @@ Route::middleware(['auth', 'role:ADM'])
         Route::patch('/students/{student}/toggle-status', [StudentController::class, 'toggleStatus'])
             ->name('students.toggle-status');
 
-        Route::get('/profile', [AdminDashboardController::class, 'profile'])
-            ->name('profile');
+        Route::get('/profile', [AdminDashboardController::class, 'profile'])->name('profile');
+        Route::get('/attendances', [AdminAttendanceController::class, 'index'])->name('attendances.index');
     });
 
 /*
@@ -122,13 +118,12 @@ Route::middleware(['auth', 'role:FAS'])
     ->name('facilitator.')
     ->group(function () {
 
-        Route::get('/dashboard', [FacilitatorDashboardController::class, 'index'])
-            ->name('dashboard');
-
+        Route::get('/dashboard', [FacilitatorDashboardController::class, 'index'])->name('dashboard');
         Route::resource('daily-reports', FacilitatorDailyReportController::class);
-
-        Route::get('/profile', [FacilitatorDashboardController::class, 'profile'])
-            ->name('profile');
+        Route::get('/profile', [FacilitatorDashboardController::class, 'profile'])->name('profile');
+        //Absensi peserta didik
+        Route::get('/attendances', [FacilitatorAttendanceController::class, 'index'])->name('attendances.index');
+        Route::post('/attendances', [FacilitatorAttendanceController::class, 'store'])->name('attendances.store');
     });
 
 /*
@@ -141,15 +136,11 @@ Route::middleware(['auth', 'role:PAR'])
     ->prefix('parent')
     ->name('parent.')
     ->group(function () {
-
-        Route::get('/dashboard', [ParentDashboardController::class, 'index'])
-            ->name('dashboard');
-
-        Route::get('/daily-reports', [ParentDailyReportController::class, 'index'])
-            ->name('daily_reports.index');
-
-        Route::get('/daily-reports/{dailyReport}', [ParentDailyReportController::class, 'show'])
-            ->name('daily_reports.show');
+        Route::get('/dashboard', [ParentDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/daily-reports', [ParentDailyReportController::class, 'index'])->name('daily_reports.index');
+        Route::get('/daily-reports/{dailyReport}', [ParentDailyReportController::class, 'show'])->name('daily_reports.show');
+        //riwayat absensi
+        Route::get('/attendances', [ParentAttendanceController::class, 'index'])->name('attendances.index');
     });
 
 require __DIR__ . '/auth.php';
