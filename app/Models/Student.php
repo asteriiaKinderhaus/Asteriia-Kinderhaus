@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\ParentModel;
 use App\Models\Gender;
-use App\Models\SchoolClass;
-use App\models\Facilitator;
+use App\Models\Facilitator;
 use App\Models\FacilitatorStudent;
 
 class Student extends Model
@@ -19,6 +18,7 @@ class Student extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
+
     protected $fillable = [
         'id',
         'nis',
@@ -27,7 +27,6 @@ class Student extends Model
         'birth_place',
         'birth_date',
         'gender_id',
-        'class_id',
         'parent_id',
         'photo',
         'status',
@@ -52,15 +51,6 @@ class Student extends Model
         return $this->belongsTo(
             Gender::class,
             'gender_id',
-            'id'
-        );
-    }
-
-    public function schoolClass()
-    {
-        return $this->belongsTo(
-            SchoolClass::class,
-            'class_id',
             'id'
         );
     }

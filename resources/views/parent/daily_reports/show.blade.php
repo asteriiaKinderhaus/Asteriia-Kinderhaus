@@ -44,11 +44,6 @@
             </div>
 
             <div class="row mb-4">
-                <div class="col-md-3 font-weight-bold">Kelas</div>
-                <div class="col-md-9">{{ $dailyReport->student->schoolClass->name }}</div>
-            </div>
-
-            <div class="row mb-4">
                 <div class="col-md-3 font-weight-bold">Fasilitator</div>
                 <div class="col-md-9">{{ $dailyReport->facilitator->name }}</div>
             </div>

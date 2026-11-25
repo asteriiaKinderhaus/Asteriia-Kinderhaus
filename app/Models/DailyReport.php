@@ -5,9 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\DailyReportSelfHelp;
-use App\Models\Student;
-
 
 class DailyReport extends Model
 {
@@ -22,35 +19,20 @@ class DailyReport extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-
         'id',
-
         'report_date',
-
         'student_id',
-
         'facilitator_id',
-
-        'class_id',
-
         'additional_note',
-
         'facilitator_activity',
-
         'parent_activity',
-
         'parent_note',
-
         'status',
-
     ];
 
     protected $casts = [
-
         'report_date' => 'date',
-
         'status' => 'boolean',
-
     ];
 
     public function student()
@@ -67,15 +49,6 @@ class DailyReport extends Model
         return $this->belongsTo(
             Facilitator::class,
             'facilitator_id',
-            'id'
-        );
-    }
-
-    public function schoolClass()
-    {
-        return $this->belongsTo(
-            SchoolClass::class,
-            'class_id',
             'id'
         );
     }
@@ -98,9 +71,6 @@ class DailyReport extends Model
         );
     }
 
-    /**
-     * Relasi ke hasil stimulasi
-     */
     public function stimulations()
     {
         return $this->hasMany(

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\ClassController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,7 +14,6 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FacilitatorController;
 use App\Http\Controllers\Admin\ParentController;
 use App\Http\Controllers\Admin\StudentController;
-use App\Http\Controllers\Admin\SchoolClassController;
 use App\Http\Controllers\Admin\MealController;
 use App\Http\Controllers\Admin\DailyReportController as AdminDailyReportController;
 use App\Http\Controllers\Admin\SelfHelpController;
@@ -71,10 +69,8 @@ Route::middleware(['auth', 'role:ADM'])
         Route::get('parents/search', [ParentController::class, 'search'])
             ->name('parents.search');
         Route::resource('parents', ParentController::class);
-        Route::resource('school-classes', SchoolClassController::class);
         Route::resource('meals', MealController::class);
         Route::resource('daily-reports', AdminDailyReportController::class);
-        Route::resource('class-name', ClassController::class);
         Route::resource('selfhelp', SelfHelpController::class);
         Route::resource('brain-gym', BrainGymController::class);
         Route::resource('stimulation', StimulationController::class);

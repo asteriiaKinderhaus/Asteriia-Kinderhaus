@@ -25,7 +25,6 @@ class DailyReportController extends Controller
         // Query laporan
         $query = DailyReport::with([
             'student',
-            'schoolClass',
             'facilitator'
         ]);
 

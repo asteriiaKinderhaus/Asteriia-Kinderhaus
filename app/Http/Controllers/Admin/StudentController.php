@@ -49,7 +49,6 @@ class StudentController extends Controller
     | Create
     |--------------------------------------------------------------------------
     */
-
     public function create()
     {
         $genders = Gender::orderBy('gender')->get();
@@ -69,20 +68,16 @@ class StudentController extends Controller
     public function store(StudentRegistrationRequest $request)
     {
         $registration = DB::transaction(function () use ($request) {
-
             /*
              * Jika parent_id diisi,
              * gunakan data orang tua yang sudah ada.
              */
             if ($request->filled('parent_id')) {
-
                 $parent = ParentModel::findOrFail(
                     $request->parent_id
                 );
-
                 $account = null;
             } else {
-
                 /*
                  * Jika parent_id kosong,
                  * buat akun dan data orang tua baru.
@@ -91,25 +86,17 @@ class StudentController extends Controller
                     $request->parent_name,
                     'PAR'
                 );
-
                 $user = $account['user'];
-
                 $parent = ParentModel::create([
                     'id' => GenerateId::make(
                         ParentModel::class,
                         'PAR'
                     ),
-
                     'name' => $request->parent_name,
-
                     'address' => $request->parent_address,
-
                     'telephone' => $request->parent_telephone,
-
                     'email' => $request->parent_email,
-
                     'gender_id' => $request->parent_gender_id,
-
                     'user_id' => $user->id,
                 ]);
             }
@@ -121,37 +108,24 @@ class StudentController extends Controller
                 Student::class,
                 'STU'
             );
-
             /*
              * Buat peserta didik.
              */
             $student = Student::create([
                 'id' => $studentId,
-
                 'nis' => $studentId,
-
                 'name' => $request->student_name,
-
                 'nickname' => $request->student_nickname,
-
                 'birth_place' => $request->student_birth_place,
-
                 'birth_date' => $request->student_birth_date,
-
                 'gender_id' => $request->student_gender_id,
-
-                'class_id' => 'CLS000003',
-
                 'parent_id' => $parent->id,
-
                 'status' => 1,
             ]);
 
             return [
                 'student' => $student,
-
                 'parent' => $parent,
-
                 'account' => $account,
             ];
         });
@@ -170,11 +144,8 @@ class StudentController extends Controller
             )->send(
                 new AccountCreatedMail(
                     $registration['parent']->name,
-
                     $registration['account']['username'],
-
                     $registration['account']['password'],
-
                     'Parent'
                 )
             );
@@ -197,9 +168,7 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         $student = Student::findOrFail($id);
-
         $parents = ParentModel::orderBy('name')->get();
-
         $genders = Gender::orderBy('gender')->get();
 
         return view(
@@ -250,15 +219,10 @@ class StudentController extends Controller
 
         $student->update([
             'name' => $request->name,
-
             'nickname' => $request->nickname,
-
             'birth_place' => $request->birth_place,
-
             'birth_date' => $request->birth_date,
-
             'gender_id' => $request->gender_id,
-
             'parent_id' => $request->parent_id,
         ]);
 

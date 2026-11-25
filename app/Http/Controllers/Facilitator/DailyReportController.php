@@ -274,7 +274,6 @@ class DailyReportController extends Controller
 
         $dailyReport = DailyReport::with([
             'student',
-            'student.schoolClass',
             'meals',
             'selfHelps',
             'stimulations',

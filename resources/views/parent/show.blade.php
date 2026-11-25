@@ -43,17 +43,6 @@
 
             </tr>
 
-            <tr>
-
-                <th>Kelas</th>
-
-                <td>
-
-                    {{ $dailyReport->student->schoolClass->name }}
-
-                </td>
-
-            </tr>
 
             <tr>
 

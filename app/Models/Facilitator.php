@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\FacilitatorStudent;
 
@@ -39,16 +38,6 @@ class Facilitator extends Model
     public function gender()
     {
         return $this->belongsTo(Gender::class);
-    }
-
-    public function schoolClasses()
-    {
-        return $this->belongsToMany(
-            SchoolClass::class,
-            'facilitator_class',
-            'facilitator_id',
-            'class_id'
-        )->withTimestamps();
     }
 
     public function facilitatorStudents()
